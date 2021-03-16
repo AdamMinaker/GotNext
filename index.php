@@ -23,9 +23,7 @@
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">Games</h1>
         <p class="lead text-muted">Games happening right now</p>
-        <p>
-          <a href="create.php" class="btn btn-primary my-2">New Game</a>
-        </p>
+        <p><a href="new_game.php" class="btn btn-primary my-2">New Game</a></p>
       </div>
     </div>
   </section>
