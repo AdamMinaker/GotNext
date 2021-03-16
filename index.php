@@ -9,7 +9,8 @@
   // Query the db for all active games.
   $query = "SELECT games.GameID, locations.LocationID, games.Description, games.Duration, games.PostedAt, locations.Name, locations.Image
             FROM games
-            JOIN locations ON locations.LocationID = games.LocationID";
+            JOIN locations ON locations.LocationID = games.LocationID
+            ORDER BY games.PostedAt DESC";
   $statement = $db->prepare($query);
   $statement->execute();
   $games = $statement->fetchAll();

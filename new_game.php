@@ -26,6 +26,7 @@
           <?php endforeach ?>
         </select>
       </p>
+      <p>Dont see your local court here? <a href="new_location.php">Add a court.</a></p>
       <p>
         <label for="duration">Duration</label>
         <input type="number" name="duration" id="duration" placeholder="2 hours" />

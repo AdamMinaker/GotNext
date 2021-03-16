@@ -19,7 +19,7 @@
   $statement->bindvalue(':description', $description);
   $statement->execute();
 
-  //header('Location: index.php');
+  header('Location: index.php');
 
   require 'header.php';
 ?>
@@ -28,9 +28,9 @@
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">An error occured.</h1>
-        <p class="lead text-muted">Please try again.</p>
+        <p class="lead text-muted">Please make sure you submit a game location and duration.</p>
         <p>
-          <a href="index.php" class="btn btn-primary my-2">View Games</a>
+          <a href="index.php" class="btn btn-primary my-2">Go Back</a>
         </p>
       </div>
     </div>
