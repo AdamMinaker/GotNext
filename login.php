@@ -1,0 +1,29 @@
+<!--
+  Author: Adam Minaker
+  Date: 3/18/2021
+  Description: Login script for GotNext.
+-->
+<?php
+require 'header.php';
+?>
+<main>
+  <form action="process_login.php" method="post">
+    <fieldset>
+      <legend>Login</legend>
+      <p>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" />
+      </p>
+      <p>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" />
+      </p>
+      <p>
+        <input type="submit" name="command" value="Register" />
+      </p>
+    </fieldset>
+  </form>
+</main>
+<?php
+require 'footer.php';
+?>

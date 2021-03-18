@@ -1,3 +1,8 @@
+<!--
+  Author: Adam Minaker
+  Date: 3/10/2021
+  Description: Footer script for GotNext.
+-->
 <footer class="text-muted py-5">
   <div class="container">
     <p class="mb-0">Made with &#10084; by Adam at <a href="https://www.adamminaker.com">adamminaker.com</a></p>

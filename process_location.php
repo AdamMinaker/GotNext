@@ -30,12 +30,11 @@ if ($file_upload_detected) {
     $statement->bindvalue(':image', $image_path);
     $statement->execute();
 
-    header('Location: index.php');
+    header('Location: new_game.php');
   }
 }
 
-function file_is_an_image($temporary_path, $new_path)
-{
+function file_is_an_image($temporary_path, $new_path) {
   $allowed_mime_types = ['image/gif', 'image/jpeg', 'image/png'];
   $allowed_file_extensions = ['gif', 'jpg', 'jpeg', 'png'];
 
@@ -48,8 +47,7 @@ function file_is_an_image($temporary_path, $new_path)
   return $file_extension_is_valid && $mime_type_is_valid;
 }
 
-function file_upload_path($original_filename, $upload_subfolder_name = 'image')
-{
+function file_upload_path($original_filename, $upload_subfolder_name = 'image') {
   $current_folder = dirname(__FILE__);
   $path_segments = [$current_folder, $upload_subfolder_name, basename($original_filename)];
   return join(DIRECTORY_SEPARATOR, $path_segments);

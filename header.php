@@ -1,3 +1,11 @@
+<!--
+  Author: Adam Minaker
+  Date: 3/10/2021
+  Description: Header script for GotNext.
+-->
+<?php
+session_start();
+?>
 <!doctype html>
 <html lang="en">
 
@@ -18,8 +26,12 @@
           </div>
           <div class="col-sm-4 offset-md-1 py-4">
             <ul class="list-unstyled">
-              <li><a href="#" class="text-white">Current Games</a></li>
-              <li><a href="#" class="text-white">Court Locations</a></li>
+              <?php if (!isset($_SESSION['fname'])): ?>
+                <li><a href="login.php" class="text-white">Login</a></li>
+                <li><a href="register.php" class="text-white">Register</a></li>
+              <?php elseif (isset($_SESSION['fname'])): ?>
+                <li><a href="logout.php" class="text-white">Logout</a></li>
+              <?php endif ?>
             </ul>
           </div>
         </div>
