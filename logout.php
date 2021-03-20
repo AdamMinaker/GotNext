@@ -6,18 +6,6 @@
 <?php
 require 'header.php';
 session_destroy();
-header('Location: index.php');
+require 'footer.php';
+header('Location: index.php?logout');
 ?>
-<main>
-  <section class="py-5 text-center container">
-    <div class="row py-lg-5">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Logged Out Successfully.</h1>
-        <p>
-          <a href="index.php" class="btn btn-primary my-2">View Games</a>
-        </p>
-      </div>
-    </div>
-  </section>
-</main>
-<?php require 'footer.php' ?>

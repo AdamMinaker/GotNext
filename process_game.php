@@ -11,11 +11,13 @@
   $duration = filter_input(INPUT_POST, 'duration', FILTER_SANITIZE_NUMBER_INT);
   $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+  $hourly_duration = "$duration . :00:00";
+
   $query = "INSERT INTO games (LocationID, duration, description) 
             VALUES (:location_id, :duration, :description)";
   $statement = $db->prepare($query);
   $statement->bindvalue(':location_id', $location_id);
-  $statement->bindvalue(':duration', $duration);
+  $statement->bindvalue(':duration', $hourly_duration);
   $statement->bindvalue(':description', $description);
   $statement->execute();
 

@@ -14,6 +14,7 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GotNext</title>
   <link href="css/bootstrap.min.css?v1.0" rel="stylesheet">
+  <link href="css/main.css?v1.0" rel="stylesheet">
 </head>
 
 <body>
@@ -26,10 +27,13 @@ session_start();
           </div>
           <div class="col-sm-4 offset-md-1 py-4">
             <ul class="list-unstyled">
-              <?php if (!isset($_SESSION['fname'])): ?>
+              <?php if (!isset($_SESSION['fname'])) : ?>
                 <li><a href="login.php" class="text-white">Login</a></li>
                 <li><a href="register.php" class="text-white">Register</a></li>
-              <?php elseif (isset($_SESSION['fname'])): ?>
+                <li><a href="index.php" class="text-white">View Games</a></li>
+              <?php elseif (isset($_SESSION['fname'])) : ?>
+                <li><a href="index.php" class="text-white">View Games</a></li>
+                <li><a href="#" class="text-white">My Locations</a></li>
                 <li><a href="logout.php" class="text-white">Logout</a></li>
               <?php endif ?>
             </ul>
