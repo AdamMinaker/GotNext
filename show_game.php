@@ -19,7 +19,7 @@ $statement->execute();
 $game = $statement->fetch();
 
 // Query DB for game comments.
-$comment_query = "SELECT PostedBy, Content, PostedAt
+$comment_query = "SELECT PostedBy, PlayerID, Content, PostedAt, CommentID
                   FROM comments
                   WHERE GameID = :id
                   ORDER BY PostedAt DESC";
@@ -48,23 +48,28 @@ require 'header.php';
           <form class="comment" action="process_comment.php?id=<?= $game['GameID'] ?>" method="POST">
             <div class="input-group mb-3">
               <input type="text" class="form-control shadow" name="comment" placeholder="Message" aria-label="Message" aria-describedby="button-addon2">
-              <button class="btn btn-danger" for="comment" type="submit" id="button-addon2">Post</button>
+              <input class="btn btn-danger" for="comment" type="submit" id="button-addon2" name="command" value="Post" />
             </div>
+          <?php else : ?>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control shadow" name="comment" placeholder="Please login to chat" aria-label="Comment" aria-describedby="button-addon2" disabled>
+              <button class="btn btn-danger" for="comment" type="submit" id="button-addon2" disabled>Post</button>
+            </div>
+          <?php endif ?>
+          <?php foreach ($comments as $comment) :
+            $date = date_create($comment['PostedAt']);
+            $formatted_date = date_format($date, 'g:i a'); ?>
+            <div class="mt-3 shadow" id="comment">
+              <p><span style="float: right;"><?= $formatted_date ?></span> <?= $comment['PostedBy'] ?>:</p>
+              <p><?= $comment['Content'] ?></p>
+              <?php if (isset($_SESSION['fname'])):
+                if ($_SESSION['id'] === $comment['PlayerID'] || $_SESSION['role'] === 'A'): ?>
+                  <input class="btn btn-danger my-2 btn-sm" type="submit" name="<?= $comment['CommentID'] ?>" value="Delete" />
+                <?php endif;
+              endif; ?>
+            </div>
+          <?php endforeach ?>
           </form>
-        <?php else : ?>
-          <div class="input-group mb-3">
-            <input type="text" class="form-control shadow" name="comment" placeholder="Please login to chat" aria-label="Comment" aria-describedby="button-addon2" disabled>
-            <button class="btn btn-danger" for="comment" type="submit" id="button-addon2" disabled>Post</button>
-          </div>
-        <?php endif ?>
-        <?php foreach ($comments as $comment) :
-          $date = date_create($comment['PostedAt']);
-          $formatted_date = date_format($date, 'g:i a');?>
-          <div class="mt-3 shadow" id="comment">
-            <p><span style="float: right;"><?= $formatted_date ?></span> <?= $comment['PostedBy'] ?>:</p>
-            <p><?= $comment['Content'] ?></p>
-          </div>
-        <?php endforeach ?>
       </div>
     </div>
   </section>

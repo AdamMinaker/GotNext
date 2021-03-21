@@ -28,7 +28,7 @@ require 'header.php';
 
   <?php if (isset($_GET['logout'])) : ?>
     <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" id="login-alert">
-      <strong>Logged out.</strong>
+      <strong>Logged Out Successfully.</strong>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   <?php endif ?>
