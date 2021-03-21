@@ -9,23 +9,15 @@ require 'connect.php';
 require 'header.php';
 ?>
 <main>
-  <form method="post" enctype="multipart/form-data" action="process_location.php">
-    <fieldset>
-      <legend>New Court Location</legend>
-      <p>
-        <label for="name">Location Name</label>
-        <input name="name" id="name" />
-      </p>
-      <p>
-        <label for="file">Court Image</label>
-        <input type="file" name="file" id="image" />
-      <p>Please upload court images in landscape mode.</p>
-      </p>
-      <p>
-        <input type="submit" name="submit" value="Add Location" />
-      </p>
-    </fieldset>
-  </form>
+  <div class="text-center">
+    <h3 class="mt-3 mb-4">New Court Location</h3>
+    <form method="post" enctype="multipart/form-data" action="process_location.php">
+      <input class="form-control mb-3" name="name" id="name" />
+      <label class="form-label" for="file">Court Image</label>
+      <input class="form-control mb-3" type="file" name="file" id="image" />
+      <input class="btn btn-danger my-2" type="submit" name="command" value="Add Court" />
+    </form>
+  </div>
 </main>
 <?php
 require 'footer.php';

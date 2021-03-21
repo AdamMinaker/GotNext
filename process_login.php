@@ -38,7 +38,7 @@ if (count($players) === 1) {
         <h1 class="fw-light">There was an issue.</h1>
         <p class="lead text-muted">Please check your login details and try again.</p>
         <p>
-          <a href="login.php" class="btn btn-primary my-2">Try Again</a>
+          <a href="login.php" class="btn btn-danger my-2">Try Again</a>
         </p>
       </div>
     </div>

@@ -4,9 +4,42 @@
   Description: Custom stylesheet for GotNext.
 */
 
+#logo {
+  height: 30px;
+  width: 30px;
+}
+
+#hyperlink {
+  color: #DC3545;
+}
+
+#comment {
+    background-color: #F5AFAF;
+    border-radius: 5px;
+    padding-left: 40px;
+    padding-right: 30px;
+    padding-top: 10px;
+    padding-bottom: 1px;
+    margin: 20px auto;
+}
+
+#comment:nth-child(even) {
+  background-color: #E6E6E6;
+}
+
 @media (max-width: 500px) {
   progress {
     width: 30%;
+  }
+
+  form {
+    width: 255px;
+    margin: auto;
+  }
+
+  img {
+    height: auto;
+    width: 100%;
   }
 }
 
@@ -15,4 +48,18 @@
     width: 30%;
     margin: auto;
   }
+
+  form {
+    width: 25%;
+    margin:auto;
+  }
+
+  img {
+    height: 225px;
+    object-fit:cover;
+  }
+}
+
+.comment {
+  width: 100%;
 }

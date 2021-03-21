@@ -18,7 +18,8 @@ require 'header.php';
   <?php if (isset($_SESSION['fname'])) : ?>
     <div class="text-center">
       <h3 class="mt-3 mb-4">New Game</h3>
-      <form action="process_game.php" method="post" style="max-width: 480px; margin:auto;">
+
+      <form action="process_game.php" method="post">
         <div class="mb-1">
           <select class="form-select" id="location" name="location">
             <option disabled selected>--Game Location--</option>
@@ -28,7 +29,7 @@ require 'header.php';
           </select>
         </div>
         <div class="mb-4">
-          <p>Don't see your local court here? <a href="new_location.php">Add a court.</a></p>
+          <p>Don't see your local court here? <a id="hyperlink" href="new_location.php">Add a court.</a></p>
         </div>
         <input class="form-control" type="number" name="duration" id="duration" placeholder="Game Duration (hours)" />
         <div class="mb-3">
@@ -37,15 +38,16 @@ require 'header.php';
         </div>
         <input class="btn btn-danger my-2" type="submit" name="command" value="Create Game" />
       </form>
+      
     </div>
   <?php elseif (!isset($_SESSION['fname'])) : ?>
     <section class="py-5 text-center container">
       <div class="row py-lg-5">
         <div class="col-lg-6 col-md-8 mx-auto">
-          <h1 class="fw-light">Log in to create a new game.</h1>
+          <h1 class="fw-light">Please log in to create a new game.</h1>
           <p>
-            <a href="login.php" class="btn btn-primary my-2">Login</a>
-            <a href="register.php" class="btn btn-primary my-2">Register</a>
+            <a href="login.php" class="btn btn-danger my-2">Login</a>
+            <a href="register.php" class="btn btn-danger my-2">Register</a>
           </p>
         </div>
       </div>

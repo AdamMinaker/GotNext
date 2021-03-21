@@ -21,7 +21,7 @@ require 'header.php';
 
   <?php if (isset($_GET['login'])) : ?>
     <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="login-alert">
-      <strong>Login Success!</strong>
+      <strong>Logged In Successfully!</strong>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   <?php endif ?>
@@ -53,7 +53,7 @@ require 'header.php';
           <a href="show_game.php?id=<?= $game['GameID'] ?>" style="text-decoration: none; color: black;">
             <div class="col">
               <div class="card shadow-sm">
-                <img width="100%" height="225" src="<?= $game['Image'] ?>">
+                <img src="<?= $game['Image'] ?>">
                 <div class="card-body">
                   <h5 class="card-title"><?= $game['Name'] ?></h5>
                   <p class="card-text"><?= $game['Description'] ?></p>

@@ -7,34 +7,17 @@
 require 'header.php';
 ?>
 <main>
-  <form action="process_registration.php" method="post">
-    <fieldset>
-      <legend>Register</legend>
-      <p>
-        <label for="fname">First Name</label>
-        <input name="fname" id="fname" />
-      </p>
-      <p>
-        <label for="lname">Last Name</label>
-        <input name="lname" id="lname" />
-      </p>
-      <p>
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" />
-      </p>
-      <p>
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" />
-      </p>
-      <p>
-        <label for="cpassword">Confirm Password</label>
-        <input type="password" name="cpassword" id="cpassword" />
-      </p>
-      <p>
-        <input type="submit" name="command" value="Register" />
-      </p>
-    </fieldset>
-  </form>
+  <div class="text-center">
+    <h3 class="mb-4 mt-3">Register</h3>
+    <form action="process_registration.php" method="post">
+      <input class="form-control mb-3" name="fname" id="fname" placeholder="First Name" />
+      <input class="form-control mb-3" name="lname" id="lname" placeholder="Last Name" />
+      <input class="form-control mb-3" type="email" name="email" id="email" placeholder="Email" />
+      <input class="form-control mb-3" type="password" name="password" id="password" placeholder="Password" />
+      <input class="form-control mb-3" type="password" name="cpassword" id="cpassword" placeholder="Confirm Password" />
+      <input class="btn btn-danger my-2" type="submit" name="command" value="Register" />
+    </form>
+  </div>
 </main>
 <?php
 require 'footer.php';

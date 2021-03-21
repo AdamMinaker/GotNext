@@ -42,13 +42,13 @@ require 'header.php';
           <h1 class="fw-light">Registered Successfully!</h1>
           <p class="lead text-muted">You can now login to join and create games.</p>
           <p>
-            <a href="login.php" class="btn btn-primary my-2">Login</a>
+            <a href="login.php" class="btn btn-danger my-2">Login</a>
           </p>
         <?php else: ?>
           <h1 class="fw-light">There was an issue.</h1>
           <p class="lead text-muted">Please check your account details and try again.</p>
           <p>
-            <a href="register.php" class="btn btn-primary my-2">Try Again</a>
+            <a href="register.php" class="btn btn-danger my-2">Try Again</a>
           </p>
         <?php endif ?>
       </div>
