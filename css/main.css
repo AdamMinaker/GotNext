@@ -13,6 +13,10 @@
   color: #DC3545;
 }
 
+#hyperlink:hover {
+  color: #FF0000;
+}
+
 #comment {
     background-color: #F5AFAF;
     border-radius: 5px;
@@ -41,6 +45,10 @@
     height: auto;
     width: 100%;
   }
+
+  #comment {
+    padding-left: 20px;
+  }
 }
 
 @media (min-width: 600px) {
@@ -63,3 +71,8 @@
 .comment {
   width: 100%;
 }
+
+.form-control:focus, .form-select:focus {
+  border-color: #F5AFAF;
+  box-shadow: 0 0 0 0.2rem rgba(245, 175, 175, 1);
+} 

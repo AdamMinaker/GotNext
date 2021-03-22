@@ -8,15 +8,13 @@ session_start();
 ?>
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GotNext</title>
   <link href="css/bootstrap.min.css?v1.0" rel="stylesheet">
-  <link href="css/main.css?v2.7" rel="stylesheet">
+  <link href="css/main.css?v3.0" rel="stylesheet">
 </head>
-
 <body>
   <header>
     <div class="collapse bg-dark" id="navbarHeader">
@@ -33,7 +31,7 @@ session_start();
                 <li><a href="index.php" class="text-white">View Games</a></li>
               <?php elseif (isset($_SESSION['fname'])) : ?>
                 <li><a href="index.php" class="text-white">View Games</a></li>
-                <li><a href="#" class="text-white">My Locations</a></li>
+                <li><a href="#" class="text-white">My Courts</a></li>
                 <li><a href="logout.php" class="text-white">Logout</a></li>
               <?php endif ?>
             </ul>

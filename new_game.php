@@ -18,7 +18,6 @@ require 'header.php';
   <?php if (isset($_SESSION['fname'])) : ?>
     <div class="text-center">
       <h3 class="mt-3 mb-4">New Game</h3>
-
       <form action="process_game.php" method="post">
         <div class="mb-1">
           <select class="form-select" id="location" name="location">
@@ -38,7 +37,6 @@ require 'header.php';
         </div>
         <input class="btn btn-danger my-2" type="submit" name="command" value="Create Game" />
       </form>
-      
     </div>
   <?php elseif (!isset($_SESSION['fname'])) : ?>
     <section class="py-5 text-center container">

@@ -11,7 +11,7 @@
   $duration = filter_input(INPUT_POST, 'duration', FILTER_SANITIZE_NUMBER_INT);
   $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-  $hourly_duration = "$duration . :00:00";
+  $hourly_duration = "$duration:00:00";
 
   $query = "INSERT INTO games (LocationID, duration, description) 
             VALUES (:location_id, :duration, :description)";
