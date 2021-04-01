@@ -6,6 +6,7 @@
 <?php
 require 'connect.php';
 
+// Query the DB for location data.
 $query = "SELECT LocationID, Name
             FROM locations";
 $statement = $db->prepare($query);

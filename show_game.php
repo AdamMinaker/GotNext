@@ -5,11 +5,12 @@
 -->
 <?php
 require 'connect.php';
+require 'header.php';
 
 $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
 // Query DB for game data.
-$post_query = "SELECT games.GameID, games.LocationID, games.Description, games.Duration, games.PostedAt, locations.Name, locations.Image
+$post_query = "SELECT games.GameID, games.LocationID, games.PostedBy, games.Description, games.Duration, games.PostedAt, locations.Name, locations.Image
                FROM games
                JOIN locations ON locations.LocationID = games.LocationID
                WHERE GameID = :id";
@@ -27,8 +28,6 @@ $statement = $db->prepare($comment_query);
 $statement->bindvalue(':id', $id, PDO::PARAM_INT);
 $statement->execute();
 $comments = $statement->fetchAll();
-
-require 'header.php';
 ?>
 <main>
   <section class="py-5 text-center container">
@@ -39,6 +38,14 @@ require 'header.php';
     </div>
     <img class="img shadow-lg" src="<?= $game['Image'] ?>">
     <p class="lead mt-5"><?= $game['Description'] ?></p>
+    <?php if (isset($_SESSION['fname'])) :
+      if ($_SESSION['id'] === $game['PostedBy'] || $_SESSION['role'] === 'A') : ?>
+        <form action="process_game.php?id=<?= $game['GameID'] ?>" method="POST">
+          <a class="btn btn-danger btn-sm" href="edit_game.php?id=<?= $game['GameID'] ?>">Edit</a>
+          <input class="btn btn-danger btn-sm" name="command" type="submit" value="Delete" />
+        </form>
+    <?php endif;
+    endif; ?>
   </section>
 
   <section class="container">
@@ -47,7 +54,7 @@ require 'header.php';
         <?php if (isset($_SESSION['fname'])) : ?>
           <form class="comment" action="process_comment.php?id=<?= $game['GameID'] ?>" method="POST">
             <div class="input-group mb-3">
-              <input type="text" class="form-control shadow" name="comment" placeholder="Message" aria-label="Message" aria-describedby="button-addon2">
+              <input type="text" class="form-control shadow" name="comment" placeholder="Message" aria-label="Message" aria-describedby="button-addon2" autocomplete="off">
               <input class="btn btn-danger" for="comment" type="submit" id="button-addon2" name="command" value="Post" />
             </div>
           <?php else : ?>
@@ -62,10 +69,10 @@ require 'header.php';
             <div class="mt-3 shadow" id="comment">
               <p><span style="float: right;"><?= $formatted_date ?></span> <?= $comment['PostedBy'] ?>:</p>
               <p><?= $comment['Content'] ?></p>
-              <?php if (isset($_SESSION['fname'])):
-                if ($_SESSION['id'] === $comment['PlayerID'] || $_SESSION['role'] === 'A'): ?>
+              <?php if (isset($_SESSION['fname'])) :
+                if ($_SESSION['id'] === $comment['PlayerID'] || $_SESSION['role'] === 'A') : ?>
                   <input class="btn btn-danger my-2 btn-sm" type="submit" name="<?= $comment['CommentID'] ?>" value="Delete" />
-                <?php endif;
+              <?php endif;
               endif; ?>
             </div>
           <?php endforeach ?>

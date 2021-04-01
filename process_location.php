@@ -12,6 +12,8 @@ $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 $file_upload_detected = isset($_FILES['file']) && ($_FILES['file']['error'] === 0);
 
+require 'header.php';
+
 if ($file_upload_detected) {
   $filename = $_FILES['file']['name'];
   $temporary_file_path = $_FILES['file']['tmp_name'];
@@ -23,9 +25,10 @@ if ($file_upload_detected) {
     $image_path = 'image/' . $filename;
 
     // Insert location name and image path into the database.
-    $query = "INSERT INTO locations (Name, Image) 
-              VALUES (:name, :image)";
+    $query = "INSERT INTO locations (PostedBy, Name, Image) 
+              VALUES (:postedby, :name, :image)";
     $statement = $db->prepare($query);
+    $statement->bindvalue(':postedby', $_SESSION['id']);
     $statement->bindvalue(':name', $name);
     $statement->bindvalue(':image', $image_path);
     $statement->execute();
@@ -52,8 +55,6 @@ function file_upload_path($original_filename, $upload_subfolder_name = 'image') 
   $path_segments = [$current_folder, $upload_subfolder_name, basename($original_filename)];
   return join(DIRECTORY_SEPARATOR, $path_segments);
 }
-
-require 'header.php';
 ?>
 <main>
   <section class="py-5 text-center container">

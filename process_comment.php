@@ -9,7 +9,7 @@ require 'header.php';
 $comment = filter_input(INPUT_POST, 'comment', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $posted_by = $_SESSION['fname'] . ' ' . $_SESSION['lname'];
 $player_id = $_SESSION['id'];
-$game_id = $_GET['id'];
+$game_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
 // Query to post a comment to the DB.
 if (!empty($comment) && $_POST['command'] === 'Post') {
@@ -17,8 +17,8 @@ if (!empty($comment) && $_POST['command'] === 'Post') {
               VALUES (:PostedBy, :PlayerID, :GameID, :Content)";
   $statement = $db->prepare($query);
   $statement->bindvalue(':PostedBy', $posted_by);
-  $statement->bindvalue(':PlayerID', $player_id);
-  $statement->bindvalue(':GameID', $game_id);
+  $statement->bindvalue(':PlayerID', $player_id, PDO::PARAM_INT);
+  $statement->bindvalue(':GameID', $game_id, PDO::PARAM_INT);
   $statement->bindvalue(':Content', $comment);
   $statement->execute();
 }

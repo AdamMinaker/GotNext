@@ -8,6 +8,7 @@ session_start();
 ?>
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,13 +16,18 @@ session_start();
   <link href="css/bootstrap.min.css?v1.0" rel="stylesheet">
   <link href="css/main.css?v3.0" rel="stylesheet">
 </head>
+
 <body>
   <header>
     <div class="collapse bg-dark" id="navbarHeader">
       <div class="container">
         <div class="row">
           <div class="col-sm-8 col-md-7 py-4">
-            <p class="text-white">A medium for basketball players to organize games on public courts.</p>
+            <?php if (!isset($_SESSION['fname'])) : ?>
+              <p class="text-white">A free medium for basketball players to organize and join games on public courts.<br>Register or login to create and join games!</p>
+            <?php elseif (isset($_SESSION['fname'])) : ?>
+              <p class="text-white">Hello, <?=$_SESSION['fname']?>!</p>
+            <?php endif ?>
           </div>
           <div class="col-sm-4 offset-md-1 py-4">
             <ul class="list-unstyled">

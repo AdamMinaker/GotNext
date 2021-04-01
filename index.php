@@ -58,7 +58,7 @@ require 'header.php';
                 <div class="card-body">
                   <h5 class="card-title"><?= $game['Name'] ?></h5>
                   <p class="card-text"><?= $game['Description'] ?></p>
-                  <small class="text-muted">10/10 Players</small>
+                  <small class="text-muted">1/10 Players</small>
                   <?php
                   $game['PostedAt'];
                   $posted_at_epoch_seconds = strtotime($game['PostedAt']);
