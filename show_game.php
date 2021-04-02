@@ -1,7 +1,7 @@
 <!--
   Author: Adam Minaker
   Date: 3/18/2021
-  Description: Show game script, allows players to view and comment on current games.
+  Description: Show game script, allows players to view, join, and comment on current games.
 -->
 <?php
 require 'connect.php';
@@ -9,7 +9,7 @@ require 'header.php';
 
 $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
-// Query DB for game data.
+// Query the DB for game data.
 $post_query = "SELECT games.GameID, games.LocationID, games.PostedBy, games.Description, games.Duration, games.PostedAt, locations.Name, locations.Image
                FROM games
                JOIN locations ON locations.LocationID = games.LocationID
@@ -19,11 +19,32 @@ $statement->bindvalue(':id', $id, PDO::PARAM_INT);
 $statement->execute();
 $game = $statement->fetch();
 
-// Query DB for game comments.
+// Query the DB for game players.
+$players_query = "SELECT gameplayers.GameID, gameplayers.PlayerID, players.FName, players.LName
+                  FROM gameplayers
+                  JOIN players ON players.PlayerID = gameplayers.PlayerID
+                  WHERE GameID = :id";
+$statement = $db->prepare($players_query);
+$statement->bindvalue(':id', $id, PDO::PARAM_INT);
+$statement->execute();
+$players = $statement->fetchAll();
+
+// Determine if the player is in the game.
+$in_game = false;
+
+if (isset($_SESSION['fname'])) {
+  foreach ($players as $player) {
+    if ($_SESSION['id'] === $player['PlayerID']) {
+      $in_game = true;
+    }
+  }
+}
+
+// Query the DB for game comments.
 $comment_query = "SELECT PostedBy, PlayerID, Content, PostedAt, CommentID
                   FROM comments
                   WHERE GameID = :id
-                  ORDER BY PostedAt DESC";
+                  ORDER BY PostedAt";
 $statement = $db->prepare($comment_query);
 $statement->bindvalue(':id', $id, PDO::PARAM_INT);
 $statement->execute();
@@ -44,8 +65,23 @@ $comments = $statement->fetchAll();
           <a class="btn btn-danger btn-sm" href="edit_game.php?id=<?= $game['GameID'] ?>">Edit</a>
           <input class="btn btn-danger btn-sm" name="command" type="submit" value="Delete" />
         </form>
-    <?php endif;
-    endif; ?>
+      <?php endif ?>
+      <?php if (!$in_game): ?>
+        <form class="mt-4" action="process_game.php?id=<?= $id ?>" method="POST">
+          <input class="btn btn-danger btn-lg" name="command" type="submit" value="Join Game" />
+        </form>
+      <?php endif ?>
+    <?php endif ?>
+    <div id="players">
+      <ul class="list-group mt-4">
+        <?php if (!empty($players)): ?>
+          <li class="list-group-item list-group-item-danger">Players</li>
+        <?php endif ?>
+        <?php foreach ($players as $player) : ?>
+          <li class="list-group-item"><?= $player['FName'] . ' ' . $player['LName'] ?></li>
+        <?php endforeach ?>
+      </ul>
+    </div>
   </section>
 
   <section class="container">

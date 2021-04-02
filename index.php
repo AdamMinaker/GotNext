@@ -58,14 +58,12 @@ require 'header.php';
                 <div class="card-body">
                   <h5 class="card-title"><?= $game['Name'] ?></h5>
                   <p class="card-text"><?= $game['Description'] ?></p>
+
                   <small class="text-muted">1/10 Players</small>
+                  
                   <?php
-                  $game['PostedAt'];
-                  $posted_at_epoch_seconds = strtotime($game['PostedAt']);
-                  $duration_epoch_seconds = strtotime($game['Duration']);
-                  $current_time_epoch_seconds = time();
-                  $time_left_epoch_seconds = $duration_epoch_seconds - ($current_time_epoch_seconds - $posted_at_epoch_seconds);
-                  $time_elapsed_seconds = $duration_epoch_seconds - $time_left_epoch_seconds;
+                  $time_left_epoch_seconds = strtotime($game['Duration']) - (time() - strtotime($game['PostedAt']));
+                  $time_elapsed_seconds = strtotime($game['Duration']) - $time_left_epoch_seconds;
                   $duration_array = explode(':', $game['Duration']);
                   $duration_hours = $duration_array[0];
                   $duration_minutes = $duration_array[1];

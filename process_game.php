@@ -30,6 +30,13 @@
       $statement->bindvalue(':description', $description);
       $statement->execute();
 
+      // Remove the player that created the game from any other games they may have joined before.
+      $query = "DELETE FROM gameplayers
+                WHERE PlayerID = :player_id";
+      $statement = $db->prepare($query);
+      $statement->bindvalue(':player_id', $player_id);
+      $statement->execute();
+
       header('Location: index.php');
       }
     }
@@ -59,7 +66,7 @@
         header('Location: show_game.php?id=' . $_GET['id']);
       }
       
-      // Delete a game in the DB.
+      // Delete a game from the DB.
       if ($_POST['command'] === 'Delete') {
         $query = "DELETE FROM games 
                   WHERE GameID = :game_id";
@@ -69,6 +76,26 @@
 
         header('Location: index.php');
       }
+    }
+
+    // Insert a game player into the DB.
+    if ($_POST['command'] === 'Join Game') {
+      // Remove the player from any other games they may have joined before.
+      $query = "DELETE FROM gameplayers
+                WHERE PlayerID = :player_id";
+      $statement = $db->prepare($query);
+      $statement->bindvalue(':player_id', $player_id);
+      $statement->execute();
+
+      // Add the player to their game of choice.
+      $query = "INSERT INTO gameplayers (GameID, PlayerID)
+                VALUES (:game_id, :player_id)";
+      $statement = $db->prepare($query);
+      $statement->bindvalue(':game_id', $game_id);
+      $statement->bindvalue(':player_id', $player_id);
+      $statement->execute();
+
+      header('Location: show_game.php?id=' . $game_id);
     }
   }
 ?>

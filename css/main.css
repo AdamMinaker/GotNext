@@ -66,6 +66,11 @@
     height: 225px;
     object-fit:cover;
   }
+
+  #players {
+    width: 30%;
+    margin: auto;
+  }
 }
 
 .comment {
@@ -75,4 +80,4 @@
 .form-control:focus, .form-select:focus {
   border-color: #F5AFAF;
   box-shadow: 0 0 0 0.2rem rgba(245, 175, 175, 1);
-} 
+}
