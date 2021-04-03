@@ -57,7 +57,9 @@ $comments = $statement->fetchAll();
         <h1 class="fw-light"><?= $game['Name'] ?></h1>
       </div>
     </div>
-    <img class="img shadow-lg" src="<?= $game['Image'] ?>">
+    <?php if (!empty($game['Image'])): ?>
+      <img class="img shadow-lg" src="<?= $game['Image'] ?>">
+    <?php endif ?>
     <p class="lead mt-5"><?= $game['Description'] ?></p>
     <?php if (isset($_SESSION['fname'])) :
       if ($_SESSION['id'] === $game['PostedBy'] || $_SESSION['role'] === 'A') : ?>

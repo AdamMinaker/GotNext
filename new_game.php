@@ -13,6 +13,7 @@ $statement = $db->prepare($query);
 $statement->execute();
 $locations = $statement->fetchAll();
 
+
 require 'header.php';
 ?>
 <main>
@@ -21,7 +22,7 @@ require 'header.php';
       <h3 class="mt-3 mb-4">New Game</h3>
       <form action="process_game.php" method="post">
         <div class="mb-1">
-          <select class="form-select" id="location" name="location">
+          <select class="form-select" id="location" name="location" required>
             <option disabled selected>--Game Location--</option>
             <?php foreach ($locations as $location) : ?>
               <option value="<?= $location['LocationID'] ?>"><?= $location['Name'] ?></option>
@@ -29,9 +30,9 @@ require 'header.php';
           </select>
         </div>
         <div class="mb-4">
-          <p>Don't see your local court here? <a id="hyperlink" href="new_location.php">Add a court.</a></p>
+          <p>Don't see your local court here? <a id="hyperlink" href="new_location.php">Add a location.</a></p>
         </div>
-        <input class="form-control" type="number" name="duration" id="duration" placeholder="Game Duration (hours)" />
+        <input class="form-control" type="number" name="duration" id="duration" placeholder="Game Duration (hours)" required/>
         <div class="mb-3">
           <label for="description"></label>
           <textarea class="form-control" style="height: 100px;" name="description" id="description" placeholder="Game Description"></textarea>

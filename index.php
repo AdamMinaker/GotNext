@@ -54,14 +54,23 @@ require 'header.php';
           <a href="show_game.php?id=<?= $game['GameID'] ?>" style="text-decoration: none; color: black;">
             <div class="col">
               <div class="card shadow-sm">
-                <img src="<?= $game['Image'] ?>">
+                <?php if (!empty($game['Image'])) : ?>
+                  <img src="<?= $game['Image'] ?>">
+                <?php endif ?>
                 <div class="card-body">
                   <h5 class="card-title"><?= $game['Name'] ?></h5>
                   <p class="card-text"><?= $game['Description'] ?></p>
-
-                  <small class="text-muted">1/10 Players</small>
-                  
                   <?php
+                  $game_id = $game['GameID'];
+                  $query = "SELECT COUNT(PlayerID)
+                    FROM gameplayers
+                    WHERE GameID = $game_id";
+                  $statement = $db->prepare($query);
+                  $statement->execute();
+                  $players = $statement->fetch();
+
+                  $player_count = $players['COUNT(PlayerID)'];
+
                   $time_left_epoch_seconds = strtotime($game['Duration']) - (time() - strtotime($game['PostedAt']));
                   $time_elapsed_seconds = strtotime($game['Duration']) - $time_left_epoch_seconds;
                   $duration_array = explode(':', $game['Duration']);
@@ -70,6 +79,7 @@ require 'header.php';
                   $duration_seconds = ($duration_hours * 3600) + ($duration_minutes * 60);
                   $time_left_ratio = ($time_elapsed_seconds / $duration_seconds) * 100;
                   ?>
+                  <small class="text-muted"><?=$player_count?>/10 Players</small>
                   <small class="text-muted" style="float: right;"><?= date('G:i:s', $time_left_epoch_seconds); ?> remaining</small>
                   <div class="progress mt-2">
                     <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $time_left_ratio ?>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>

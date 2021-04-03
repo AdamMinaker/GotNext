@@ -11,6 +11,7 @@ require 'connect.php';
 $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 $file_upload_detected = isset($_FILES['file']) && ($_FILES['file']['error'] === 0);
+$image_path = '';
 
 require 'header.php';
 
@@ -21,20 +22,21 @@ if ($file_upload_detected) {
 
   if (file_is_an_image($temporary_file_path, $new_file_path)) {
     move_uploaded_file($temporary_file_path, $new_file_path);
-
     $image_path = 'image/' . $filename;
-
-    // Insert location name and image path into the database.
-    $query = "INSERT INTO locations (PostedBy, Name, Image) 
-              VALUES (:postedby, :name, :image)";
-    $statement = $db->prepare($query);
-    $statement->bindvalue(':postedby', $_SESSION['id']);
-    $statement->bindvalue(':name', $name);
-    $statement->bindvalue(':image', $image_path);
-    $statement->execute();
-
-    header('Location: new_game.php');
   }
+}
+
+if (!empty($name)) {
+  // Insert location name and image path into the database.
+  $query = "INSERT INTO locations (PostedBy, Name, Image) 
+                VALUES (:postedby, :name, :image)";
+  $statement = $db->prepare($query);
+  $statement->bindvalue(':postedby', $_SESSION['id']);
+  $statement->bindvalue(':name', $name);
+  $statement->bindvalue(':image', $image_path);
+  $statement->execute();
+
+  header('Location: new_game.php');
 }
 
 function file_is_an_image($temporary_path, $new_path) {
@@ -61,10 +63,10 @@ function file_upload_path($original_filename, $upload_subfolder_name = 'image') 
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">An error occured.</h1>
-        <p class="lead text-muted">Please make sure you submit a location name and image.</p>
+        <p class="lead text-muted">Please make sure you submit a location name.</p>
         <p class="lead text-muted">Images must be in jpg, gif, or png format.</p>
         <p>
-          <a href="index.php" class="btn btn-primary my-2">Go Back</a>
+          <a href="index.php" class="btn btn-danger my-2">Go Back</a>
         </p>
       </div>
     </div>
