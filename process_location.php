@@ -11,6 +11,7 @@ require 'connect.php';
 $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 $file_upload_detected = isset($_FILES['file']) && ($_FILES['file']['error'] === 0);
+$acceptable_file_type = true;
 $image_path = '';
 
 require 'header.php';
@@ -23,10 +24,12 @@ if ($file_upload_detected) {
   if (file_is_an_image($temporary_file_path, $new_file_path)) {
     move_uploaded_file($temporary_file_path, $new_file_path);
     $image_path = 'image/' . $filename;
+  } else {
+    $acceptable_file_type = false;
   }
 }
 
-if (!empty($name)) {
+if (!empty($name) && $acceptable_file_type) {
   // Insert location name and image path into the database.
   $query = "INSERT INTO locations (PostedBy, Name, Image) 
                 VALUES (:postedby, :name, :image)";
