@@ -15,16 +15,29 @@ $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $confirm_password = filter_input(INPUT_POST, 'cpassword', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-// Check if inputs are valid.
-if (empty($fname) || empty($lname) || empty($email) || empty($password) || empty($confirm_password)) {
+// Query the DB for accounts with the submitted email address.
+$query = "SELECT Email
+          FROM players
+          WHERE Email = :Email";
+$statement = $db->prepare($query);
+$statement->bindvalue(':Email', $email);
+$statement->execute();
+$player = $statement->fetch();
+
+// Check if a player with submitted email address already exists.
+if (!empty($player)) {
   $valid_registration = false;
+// Check if inputs are valid.
+} elseif (empty($fname) || empty($lname) || empty($email) || empty($password) || empty($confirm_password)) {
+  $valid_registration = false;
+// Check if passwords match.
 } elseif ($password != $confirm_password) {
   $valid_registration = false;
 } else {
   //Hash and salt password
   $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-  // Insert new player into the database.
+  // Insert new player into the DB.
   $query = "INSERT INTO players (fname, lname, email, password) 
             VALUES (:fname, :lname, :email, :password)";
   $statement = $db->prepare($query);
