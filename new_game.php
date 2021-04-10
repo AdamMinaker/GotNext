@@ -30,7 +30,7 @@ require 'header.php';
           </select>
         </div>
         <div class="mb-4">
-          <p>Don't see your local court here? <a id="hyperlink" href="new_location.php">Add a location.</a></p>
+          <p>Don't see your local court here? <a id="hyperlink" href="new_location.php?new-game">Add a location.</a></p>
         </div>
         <input class="form-control" type="number" name="duration" id="duration" placeholder="Game Duration (hours)" required/>
         <div class="mb-3">

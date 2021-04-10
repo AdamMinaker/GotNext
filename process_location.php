@@ -39,7 +39,23 @@ if (!empty($name) && $acceptable_file_type) {
   $statement->bindvalue(':image', $image_path);
   $statement->execute();
 
-  header('Location: new_game.php');
+  if (isset($_GET['new-game'])) {
+    header('Location: new_game.php');
+  } elseif (isset($_GET['locations'])) {
+    header('Location: locations.php');
+  }
+}
+
+$location_id = filter_input(INPUT_POST, 'location_id', FILTER_SANITIZE_NUMBER_INT);
+
+if ($_POST['command'] === 'Delete') {
+  $query = "DELETE FROM locations 
+            WHERE LocationID = :LocationID";
+  $statement = $db->prepare($query);
+  $statement->bindvalue(':LocationID', $location_id, PDO::PARAM_INT);
+  $statement->execute();
+
+  header('Location: locations.php');
 }
 
 function file_is_an_image($temporary_path, $new_path) {

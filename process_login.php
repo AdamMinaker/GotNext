@@ -21,15 +21,17 @@ $players = $statement->fetchAll();
 require 'header.php';
 
 // Verify password and check if the user exists.
-if (password_verify($password, $players[0]['Password']) && count($players) === 1) {
-  $valid_login = true;
+if (!empty($players)) {
+  if (password_verify($password, $players[0]['Password']) && count($players) === 1) {
+    $valid_login = true;
 
-  $_SESSION['fname'] = $players[0]['FName'];
-  $_SESSION['lname'] = $players[0]['LName'];
-  $_SESSION['id'] = $players[0]['PlayerID'];
-  $_SESSION['role'] = $players[0]['Role'];
+    $_SESSION['fname'] = $players[0]['FName'];
+    $_SESSION['lname'] = $players[0]['LName'];
+    $_SESSION['id'] = $players[0]['PlayerID'];
+    $_SESSION['role'] = $players[0]['Role'];
 
-  header('Location: index.php?login');
+    header('Location: index.php?login');
+  }
 }
 ?>
 <main>
