@@ -21,6 +21,9 @@ if (empty($fname) || empty($lname) || empty($email) || empty($password) || empty
 } elseif ($password != $confirm_password) {
   $valid_registration = false;
 } else {
+  //Hash and salt password
+  $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
   // Insert new player into the database.
   $query = "INSERT INTO players (fname, lname, email, password) 
             VALUES (:fname, :lname, :email, :password)";
@@ -28,7 +31,7 @@ if (empty($fname) || empty($lname) || empty($email) || empty($password) || empty
   $statement->bindvalue(':fname', $fname);
   $statement->bindvalue(':lname', $lname);
   $statement->bindvalue(':email', $email);
-  $statement->bindvalue(':password', $password);
+  $statement->bindvalue(':password', $hashed_password);
   $statement->execute();
 }
 

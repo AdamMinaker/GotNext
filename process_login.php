@@ -10,17 +10,18 @@ require 'connect.php';
 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-$query = "SELECT *
+$query = "SELECT FName, LName, PlayerID, Role, Password
           FROM players
-          WHERE email = '$email' AND password = '$password'";
+          WHERE Email = :Email";
 $statement = $db->prepare($query);
+$statement->bindvalue(':Email', $email);
 $statement->execute();
 $players = $statement->fetchAll();
 
 require 'header.php';
 
-// Check if the user exists.
-if (count($players) === 1) {
+// Verify password and check if the user exists.
+if (password_verify($password, $players[0]['Password']) && count($players) === 1) {
   $valid_login = true;
 
   $_SESSION['fname'] = $players[0]['FName'];
