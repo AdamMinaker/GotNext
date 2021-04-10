@@ -14,7 +14,7 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GotNext</title>
   <link href="css/bootstrap.min.css?v1.0" rel="stylesheet">
-  <link href="css/main.css?v3.1" rel="stylesheet">
+  <link href="css/main.css?v3.6" rel="stylesheet">
 </head>
 
 <body>
@@ -26,7 +26,7 @@ session_start();
             <?php if (!isset($_SESSION['fname'])) : ?>
               <p class="text-white">A free medium for basketball players to organize and join games on public courts.<br>Register or login to create and join games!</p>
             <?php elseif (isset($_SESSION['fname'])) : ?>
-              <p class="text-white">Hello, <?=$_SESSION['fname']?>!</p>
+              <p class="text-white">Hello, <?= $_SESSION['fname'] ?>!</p>
             <?php endif ?>
           </div>
           <div class="col-sm-4 offset-md-1 py-4">
@@ -37,7 +37,12 @@ session_start();
                 <li><a href="index.php" class="text-white">View Games</a></li>
               <?php elseif (isset($_SESSION['fname'])) : ?>
                 <li><a href="index.php" class="text-white">View Games</a></li>
-                <li><a href="#" class="text-white">My Courts</a></li>
+                <?php if ($_SESSION['role'] === 'A') : ?>
+                  <li><a href="admin.php" class="text-white">All Users</a></li>
+                  <li><a href="locations.php" class="text-white">All Locations</a></li>
+                <?php elseif ($_SESSION['role'] === 'U') : ?>
+                  <li><a href="locations.php" class="text-white">My Locations</a></li>
+                <?php endif ?>
                 <li><a href="logout.php" class="text-white">Logout</a></li>
               <?php endif ?>
             </ul>

@@ -46,7 +46,7 @@ require 'header.php';
       </div>
     </div>
   </section>
-  <!-- PHP cards -->
+  <!-- Game Cards -->
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -68,9 +68,7 @@ require 'header.php';
                   $statement = $db->prepare($query);
                   $statement->execute();
                   $players = $statement->fetch();
-
                   $player_count = $players['COUNT(PlayerID)'];
-
                   $time_left_epoch_seconds = strtotime($game['Duration']) - (time() - strtotime($game['PostedAt']));
                   $time_elapsed_seconds = strtotime($game['Duration']) - $time_left_epoch_seconds;
                   $duration_array = explode(':', $game['Duration']);

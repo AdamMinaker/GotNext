@@ -8,7 +8,7 @@ require 'header.php';
 ?>
 <main>
   <div class="text-center">
-    <h3 class="mb-4 mt-3">Register</h3>
+    <h3 class="mb-4 mt-3">Register New Player</h3>
     <form action="process_registration.php" method="post">
       <input class="form-control mb-3" name="fname" id="fname" placeholder="First Name" />
       <input class="form-control mb-3" name="lname" id="lname" placeholder="Last Name" />

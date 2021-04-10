@@ -81,3 +81,12 @@
   border-color: #F5AFAF;
   box-shadow: 0 0 0 0.2rem rgba(245, 175, 175, 1);
 }
+
+#admin {
+  width: auto;
+}
+
+#add-player {
+  width: 120px;
+  margin: auto;
+}
