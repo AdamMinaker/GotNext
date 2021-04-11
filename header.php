@@ -14,7 +14,7 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GotNext</title>
   <link href="css/bootstrap.min.css?v1.0" rel="stylesheet">
-  <link href="css/main.css?v4.1" rel="stylesheet">
+  <link href="css/main.css?v4.2" rel="stylesheet">
 </head>
 
 <body>
