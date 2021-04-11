@@ -12,6 +12,13 @@ session_start();
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <meta name="theme-color" content="#ffffff">
   <title>GotNext</title>
   <link href="css/bootstrap.min.css?v1.0" rel="stylesheet">
   <link href="css/main.css?v4.5" rel="stylesheet">
@@ -24,7 +31,7 @@ session_start();
         <div class="row">
           <div class="col-sm-8 col-md-7 py-4">
             <?php if (!isset($_SESSION['fname'])) : ?>
-              <p class="text-white">A free website for basketball players to organize and join games on public courts.<br>Register or login to create and join games!</p>
+              <p class="text-white">A free website for basketball players to organize and join games on public courts.<br>Sign-up or login to create and join games!</p>
             <?php elseif (isset($_SESSION['fname'])) : ?>
               <p class="text-white">Hello, <?= $_SESSION['fname'] ?>!</p>
             <?php endif ?>
@@ -33,7 +40,7 @@ session_start();
             <div class="btn-group-vertical">
               <?php if (!isset($_SESSION['fname'])) : ?>
                 <a href="login.php" class="btn btn-outline-danger">Login</a>
-                <a href="register.php" class="btn btn-outline-danger">Register</a>
+                <a href="register.php" class="btn btn-outline-danger">Sign-Up</a>
                 <a href="index.php" class="btn btn-outline-danger">View Games</a>
               <?php elseif (isset($_SESSION['fname'])) : ?>
                 <a href="index.php" class="btn btn-outline-danger">View Games</a>
