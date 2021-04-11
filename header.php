@@ -53,8 +53,8 @@ session_start();
     <div class="navbar navbar-dark bg-dark shadow-sm">
       <div class="container">
         <a href="index.php" class="navbar-brand d-flex align-items-center">
+          <strong class="text-danger pe-2">GotNext</strong>
           <img id="logo" src="GotNext.png" alt="GotNext Logo" width="30" height="30">
-          <strong style="padding-left: 10px; color: #EA5455">GotNext</strong>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
