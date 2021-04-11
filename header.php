@@ -36,7 +36,7 @@ session_start();
               <p class="text-white">Hello, <?= $_SESSION['fname'] ?>!</p>
             <?php endif ?>
           </div>
-          <div class="mb-4">
+          <div class="mb-5">
             <div class="btn-group-vertical">
               <?php if (!isset($_SESSION['fname'])) : ?>
                 <a href="login.php" class="btn btn-outline-danger">Login</a>

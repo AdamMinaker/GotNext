@@ -62,7 +62,7 @@ require 'header.php';
           </p>
         <?php else: ?>
           <h1 class="fw-light">There was an issue.</h1>
-          <p class="lead text-muted">Please check your account details and try again.</p>
+          <p class="lead text-muted">Please make sure your passwords match and try again.</p>
           <p>
             <a href="register.php" class="btn btn-danger my-2">Try Again</a>
           </p>

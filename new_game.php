@@ -8,11 +8,10 @@ require 'connect.php';
 
 // Query the DB for location data.
 $query = "SELECT LocationID, Name
-            FROM locations";
+          FROM locations";
 $statement = $db->prepare($query);
 $statement->execute();
 $locations = $statement->fetchAll();
-
 
 require 'header.php';
 ?>
@@ -20,25 +19,28 @@ require 'header.php';
   <?php if (isset($_SESSION['fname'])) : ?>
     <div class="text-center">
       <h3 class="mt-3 mb-4">New Game</h3>
-      <form action="process_game.php" method="post">
+      <form action="process_game.php" method="post" class="needs-validation" novalidate>
         <div class="mb-1">
           <select class="form-select" id="location" name="location" required>
-            <option disabled selected>--Game Location--</option>
+            <option disabled selected value="">Choose a location...</option>
             <?php foreach ($locations as $location) : ?>
               <option value="<?= $location['LocationID'] ?>"><?= $location['Name'] ?></option>
             <?php endforeach ?>
           </select>
+          <div class="invalid-feedback">
+            Please choose a location.
+          </div>
         </div>
         <div class="mb-4">
           <p>Don't see your local court here? <a id="hyperlink" href="new_location.php?new-game">Add a location.</a></p>
         </div>
-        <input class="form-control" type="number" name="duration" placeholder="Game Duration (hours)" required/>
+        <input class="form-control" type="number" name="duration" placeholder="Game Duration (hours)" required />
         <div class="invalid-feedback">
           Please provide a duration.
         </div>
         <div class="mb-3">
           <label for="description"></label>
-          <textarea class="form-control" style="height: 100px;" name="description" id="description" placeholder="Game Description"></textarea>
+          <textarea class="form-control" style="height: 100px;" name="description" id="description" placeholder="Game Description (Optional)"></textarea>
         </div>
         <input class="btn btn-danger my-2" type="submit" name="command" value="Create Game" />
       </form>
@@ -57,6 +59,4 @@ require 'header.php';
     </section>
   <?php endif ?>
 </main>
-<?php
-require 'footer.php';
-?>
+<?php require 'footer.php'; ?>

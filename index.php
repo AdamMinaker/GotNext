@@ -57,22 +57,24 @@ require 'header.php';
           <p class="lead text-muted">Games happening right now</p>
         <?php endif ?>
         <p><a href="new_game.php" class="btn btn-danger my-2">New Game</a></p>
-        <p class="mt-5 text-muted">Sort Games By:</p>
-        <div class="btn-group">
-          <?php if (empty($sort)) : ?>
-            <a href="index.php" class="btn btn-outline-danger btn-sm active">Start Time</a>
-            <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm">Duration</a>
-            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location Name</a>
-          <?php elseif ($sort === 'duration') : ?>
-            <a href="index.php" class="btn btn-outline-danger btn-sm">Start Time</a>
-            <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm active">Duration</a>
-            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location Name</a>
-          <?php elseif ($sort === 'location-name') : ?>
-            <a href="index.php" class="btn btn-outline-danger btn-sm">Start Time</a>
-            <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm">Duration</a>
-            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm active">Location Name</a>
-          <?php endif ?>
-        </div>
+        <?php if (!empty($games)) : ?>
+          <p class="mt-5 text-muted">Sort Games By:</p>
+          <div class="btn-group">
+            <?php if (empty($sort)) : ?>
+              <a href="index.php" class="btn btn-outline-danger btn-sm active">Start Time</a>
+              <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm">Duration</a>
+              <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location Name</a>
+            <?php elseif ($sort === 'duration') : ?>
+              <a href="index.php" class="btn btn-outline-danger btn-sm">Start Time</a>
+              <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm active">Duration</a>
+              <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location Name</a>
+            <?php elseif ($sort === 'location-name') : ?>
+              <a href="index.php" class="btn btn-outline-danger btn-sm">Start Time</a>
+              <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm">Duration</a>
+              <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm active">Location Name</a>
+            <?php endif ?>
+          </div>
+        <?php endif ?>
       </div>
     </div>
   </section>

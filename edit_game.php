@@ -37,24 +37,26 @@ $query = "SELECT LocationID, Name
 $statement = $db->prepare($query);
 $statement->execute();
 $current_location = $statement->fetch();
-
 ?>
 <?php if (isset($_SESSION['fname'])) : ?>
   <div class="text-center">
     <h3 class="mt-3 mb-4">Edit Game</h3>
-    <form action="process_game.php?id=<?= $game['GameID'] ?>" method="post">
+    <form action="process_game.php?id=<?= $game['GameID'] ?>" method="post" class="needs-validation" novalidate>
       <div class="mb-1">
         <select class="form-select mb-3" id="location" name="location">
-          <option selected value="<?=$location_id?>"><?=$current_location['Name']?></option>
+          <option selected value="<?= $location_id ?>"><?= $current_location['Name'] ?></option>
           <?php foreach ($locations as $location) : ?>
             <option value="<?= $location['LocationID'] ?>"><?= $location['Name'] ?></option>
           <?php endforeach ?>
         </select>
       </div>
-      <input class="form-control" type="number" name="duration" id="duration" placeholder="Game Duration (hours)" value="<?= $duration ?>" />
+      <input class="form-control" type="number" name="duration" id="duration" placeholder="Game Duration (hours)" value="<?= $duration ?>" required />
+      <div class="invalid-feedback">
+        Please provide a duration.
+      </div>
       <div class="mb-3">
         <label for="description"></label>
-        <textarea class="form-control" style="height: 100px;" name="description" id="description" placeholder="Game Description"><?= $game['Description'] ?></textarea>
+        <textarea class="form-control" style="height: 100px;" name="description" id="description" placeholder="Game Description (Optional)"><?= $game['Description'] ?></textarea>
       </div>
       <input class="btn btn-danger my-2" type="submit" name="command" value="Update Game" />
     </form>

@@ -39,7 +39,7 @@ if (!empty($players)) {
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">There was an issue.</h1>
-        <p class="lead text-muted">Please check your login details and try again.</p>
+        <p class="lead text-muted">We didn't find a player with those details. Please try again.</p>
         <p>
           <a href="login.php" class="btn btn-danger my-2">Try Again</a>
         </p>
