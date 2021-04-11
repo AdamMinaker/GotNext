@@ -57,7 +57,7 @@ $comments = $statement->fetchAll();
         <h1 class="fw-light"><?= $game['Name'] ?></h1>
       </div>
     </div>
-    <?php if (!empty($game['Image'])): ?>
+    <?php if (!empty($game['Image'])) : ?>
       <img class="img shadow-lg" src="<?= $game['Image'] ?>">
     <?php endif ?>
     <p class="lead mt-5"><?= $game['Description'] ?></p>
@@ -68,15 +68,19 @@ $comments = $statement->fetchAll();
           <input class="btn btn-danger btn-sm" name="command" type="submit" value="Delete" />
         </form>
       <?php endif ?>
-      <?php if (!$in_game): ?>
+      <?php if (!$in_game) : ?>
         <form class="mt-4" action="process_game.php?id=<?= $id ?>" method="POST">
           <input class="btn btn-danger btn-lg" name="command" type="submit" value="Join Game" />
+        </form>
+      <?php elseif ($in_game) : ?>
+        <form class="mt-4" action="process_game.php?id=<?= $id ?>" method="POST">
+          <input class="btn btn-danger btn-lg" name="command" type="submit" value="Leave Game" />
         </form>
       <?php endif ?>
     <?php endif ?>
     <div id="players">
       <ul class="list-group mt-4">
-        <?php if (!empty($players)): ?>
+        <?php if (!empty($players)) : ?>
           <li class="list-group-item list-group-item-danger">Players</li>
         <?php endif ?>
         <?php foreach ($players as $player) : ?>

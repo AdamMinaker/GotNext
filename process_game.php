@@ -97,6 +97,17 @@
 
       header('Location: show_game.php?id=' . $game_id);
     }
+
+    // Delete a game player from the DB.
+    if ($_POST['command'] === 'Leave Game') {
+      $query = "DELETE FROM gameplayers
+                WHERE PlayerID = :player_id";
+      $statement = $db->prepare($query);
+      $statement->bindvalue(':player_id', $player_id);
+      $statement->execute();
+
+      header('Location: show_game.php?id=' . $game_id);
+    }
   }
 ?>
 <main>
