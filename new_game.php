@@ -32,7 +32,10 @@ require 'header.php';
         <div class="mb-4">
           <p>Don't see your local court here? <a id="hyperlink" href="new_location.php?new-game">Add a location.</a></p>
         </div>
-        <input class="form-control" type="number" name="duration" id="duration" placeholder="Game Duration (hours)" required/>
+        <input class="form-control" type="number" name="duration" placeholder="Game Duration (hours)" required/>
+        <div class="invalid-feedback">
+          Please provide a duration.
+        </div>
         <div class="mb-3">
           <label for="description"></label>
           <textarea class="form-control" style="height: 100px;" name="description" id="description" placeholder="Game Description"></textarea>
