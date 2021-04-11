@@ -14,7 +14,7 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GotNext</title>
   <link href="css/bootstrap.min.css?v1.0" rel="stylesheet">
-  <link href="css/main.css?v4.2" rel="stylesheet">
+  <link href="css/main.css?v4.4" rel="stylesheet">
 </head>
 
 <body>
@@ -29,23 +29,23 @@ session_start();
               <p class="text-white">Hello, <?= $_SESSION['fname'] ?>!</p>
             <?php endif ?>
           </div>
-          <div class="col-sm-4 offset-md-1 py-4">
-            <ul class="list-unstyled">
+          <div class="mb-4">
+            <div class="btn-group-vertical">
               <?php if (!isset($_SESSION['fname'])) : ?>
-                <li><a href="login.php" class="text-white">Login</a></li>
-                <li><a href="register.php" class="text-white">Register</a></li>
-                <li><a href="index.php" class="text-white">View Games</a></li>
+                <a href="login.php" class="btn btn-outline-danger">Login</a>
+                <a href="register.php" class="btn btn-outline-danger">Register</a>
+                <a href="index.php" class="btn btn-outline-danger">View Games</a>
               <?php elseif (isset($_SESSION['fname'])) : ?>
-                <li><a href="index.php" class="text-white">View Games</a></li>
+                <a href="index.php" class="btn btn-outline-danger">View Games</a>
                 <?php if ($_SESSION['role'] === 'A') : ?>
-                  <li><a href="admin.php" class="text-white">All Users</a></li>
-                  <li><a href="locations.php" class="text-white">All Locations</a></li>
+                  <a href="admin.php" class="btn btn-outline-danger">All Users</a>
+                  <a href="locations.php" class="btn btn-outline-danger">All Locations</a>
                 <?php elseif ($_SESSION['role'] === 'U') : ?>
-                  <li><a href="locations.php" class="text-white">My Locations</a></li>
+                  <a href="locations.php" class="btn btn-outline-danger">My Locations</a>
                 <?php endif ?>
-                <li><a href="logout.php" class="text-white">Logout</a></li>
+                <a href="logout.php" class="btn btn-outline-danger">Logout</a>
               <?php endif ?>
-            </ul>
+            </div>
           </div>
         </div>
       </div>
