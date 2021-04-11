@@ -8,12 +8,26 @@ require 'connect.php';
 
 date_default_timezone_set('America/Winnipeg');
 
+// Sanitize get superglobal.
+$sort = filter_input(INPUT_GET, 'sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+// Determine sorting method.
+$order_by = 'games.PostedAt DESC';
+
+if (isset($_GET['sort'])) {
+  if ($sort === 'duration') {
+    $order_by = 'games.Duration DESC';
+  } elseif ($sort === 'location-name') {
+    $order_by = 'locations.Name';
+  }
+}
+
 // Query the db for all active games.
 $query = "SELECT games.GameID, locations.LocationID, games.Description, games.Duration, games.PostedAt, locations.Name, locations.Image
-            FROM games
-            JOIN locations ON locations.LocationID = games.LocationID
-            WHERE CURRENT_TIMESTAMP < games.PostedAt + games.Duration
-            ORDER BY games.PostedAt DESC";
+          FROM games
+          JOIN locations ON locations.LocationID = games.LocationID
+          WHERE CURRENT_TIMESTAMP < games.PostedAt + games.Duration
+          ORDER BY $order_by";
 $statement = $db->prepare($query);
 $statement->execute();
 $games = $statement->fetchAll();
@@ -43,6 +57,22 @@ require 'header.php';
           <p class="lead text-muted">Games happening right now</p>
         <?php endif ?>
         <p><a href="new_game.php" class="btn btn-danger my-2">New Game</a></p>
+        <p class="mt-5 text-muted">Sort Games By:</p>
+        <div class="btn-group">
+          <?php if (empty($sort)) : ?>
+            <a href="index.php" class="btn btn-outline-danger btn-sm active">Start Time</a>
+            <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm">Duration</a>
+            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location Name</a>
+          <?php elseif ($sort === 'duration') : ?>
+            <a href="index.php" class="btn btn-outline-danger btn-sm">Start Time</a>
+            <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm active">Duration</a>
+            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location Name</a>
+          <?php elseif ($sort === 'location-name') : ?>
+            <a href="index.php" class="btn btn-outline-danger btn-sm">Start Time</a>
+            <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm">Duration</a>
+            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm active">Location Name</a>
+          <?php endif ?>
+        </div>
       </div>
     </div>
   </section>
@@ -55,7 +85,7 @@ require 'header.php';
             <div class="col">
               <div class="card shadow-sm">
                 <?php if (!empty($game['Image'])) : ?>
-                  <img src="<?= $game['Image'] ?>">
+                  <img src="<?= $game['Image'] ?>" alt="<?= $game['Name'] ?>">
                 <?php endif ?>
                 <div class="card-body">
                   <h5 class="card-title"><?= $game['Name'] ?></h5>
@@ -77,7 +107,7 @@ require 'header.php';
                   $duration_seconds = ($duration_hours * 3600) + ($duration_minutes * 60);
                   $time_left_ratio = ($time_elapsed_seconds / $duration_seconds) * 100;
                   ?>
-                  <small class="text-muted"><?=$player_count?>/10 Players</small>
+                  <small class="text-muted"><?= $player_count ?>/10 Players</small>
                   <small class="text-muted" style="float: right;"><?= date('G:i:s', $time_left_epoch_seconds); ?> remaining</small>
                   <div class="progress mt-2">
                     <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $time_left_ratio ?>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
