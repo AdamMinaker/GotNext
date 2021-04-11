@@ -31,7 +31,6 @@ if ($player['Role'] === 'U') {
 } elseif ($player['Role'] === 'A') {
   $current_role = 'Admin';
 }
-
 ?>
 <main>
   <?php if ($is_admin) : ?>
@@ -65,4 +64,4 @@ if ($player['Role'] === 'U') {
     </section>
   <?php endif ?>
 </main>
-<?php require 'footer.php' ?>
+<?php require 'footer.php'; ?>

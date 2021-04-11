@@ -91,6 +91,4 @@ function file_upload_path($original_filename, $upload_subfolder_name = 'image') 
     </div>
   </section>
 </main>
-<?php
-require 'footer.php';
-?>
+<?php require 'footer.php'; ?>

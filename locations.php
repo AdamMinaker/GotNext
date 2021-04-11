@@ -67,4 +67,4 @@ if ($_SESSION['role'] === 'A') {
     </div>
   </div>
 </main>
-<?php require 'footer.php' ?>
+<?php require 'footer.php'; ?>

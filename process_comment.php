@@ -23,7 +23,6 @@ if (!empty($comment) && $_POST['command'] === 'Post') {
   $statement->execute();
 }
 
-
 // Query to delete a comment from the DB.
 $keys = array_keys($_POST);
 $comment_id = filter_var($keys[1], FILTER_SANITIZE_NUMBER_INT);

@@ -8,7 +8,6 @@ session_start();
 ?>
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +22,6 @@ session_start();
   <link href="css/bootstrap.min.css?v1.0" rel="stylesheet">
   <link href="css/main.css?v4.5" rel="stylesheet">
 </head>
-
 <body>
   <header>
     <div class="collapse bg-dark" id="navbarHeader">

@@ -89,7 +89,6 @@ $comments = $statement->fetchAll();
       </ul>
     </div>
   </section>
-
   <section class="container">
     <div class="row">
       <div class="col-sm">
@@ -123,4 +122,4 @@ $comments = $statement->fetchAll();
     </div>
   </section>
 </main>
-<?php require 'footer.php' ?>
+<?php require 'footer.php'; ?>

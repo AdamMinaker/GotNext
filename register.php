@@ -3,9 +3,7 @@
   Date: 3/18/2021
   Description: Account registration script for GotNext.
 -->
-<?php
-require 'header.php';
-?>
+<?php require 'header.php'; ?>
 <main>
   <div class="text-center">
     <h3 class="mb-4 mt-3">Register New Player</h3>
@@ -34,6 +32,4 @@ require 'header.php';
     </form>
   </div>
 </main>
-<?php
-require 'footer.php';
-?>
+<?php require 'footer.php'; ?>
