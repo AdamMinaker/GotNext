@@ -2,7 +2,6 @@
   Author: Adam Minaker
   Date: 3/16/2021
   Description: Handles location post requests sent to the web server.
-  TODO: Image resizing.
 -->
 <?php
 require 'connect.php';

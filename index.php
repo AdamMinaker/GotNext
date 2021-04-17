@@ -11,6 +11,7 @@ date_default_timezone_set('America/Winnipeg');
 // Sanitize get superglobals.
 $sort = filter_input(INPUT_GET, 'sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $location_id = filter_input(INPUT_GET, 'location-id', FILTER_SANITIZE_NUMBER_INT);
+$search_query = filter_input(INPUT_POST, 'search', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 // Determine sorting method.
 $order_by = 'games.PostedAt DESC';
@@ -23,7 +24,7 @@ if (isset($_GET['sort'])) {
   }
 }
 
-// Query the db for all active games.
+// Query the DB for all active games.
 $query = "SELECT games.GameID, locations.LocationID, games.Description, games.Duration, games.PostedAt, locations.Name, locations.Image
           FROM games
           JOIN locations ON locations.LocationID = games.LocationID
@@ -33,14 +34,16 @@ $statement = $db->prepare($query);
 $statement->execute();
 $games = $statement->fetchAll();
 
-// Query the db for all locations (used if the player decides to filter by location name.)
+// Query the DB for games matching the specified location (used if the player decides to filter by location name).
 if ($sort === 'location-name') {
+  // Query the DB for location data to populate the sorting list.
   $query = "SELECT LocationID, Name
             FROM locations";
   $statement = $db->prepare($query);
   $statement->execute();
   $locations = $statement->fetchAll();
 
+  // Query the DB for the location name corresponding to the selected location id. 
   $query = "SELECT Name
             FROM locations
             WHERE LocationID = $location_id";
@@ -58,6 +61,19 @@ if ($sort === 'location-name') {
     $statement->execute();
     $games = $statement->fetchAll();
   }
+}
+
+// Query the DB for games matching the search keywords (used if the player decides to filter by keyword).
+if (!empty($search_query)) {
+  $query = "SELECT games.GameID, locations.LocationID, games.Description, games.Duration, games.PostedAt, locations.Name, locations.Image
+            FROM games
+            JOIN locations ON locations.LocationID = games.LocationID
+            WHERE CURRENT_TIMESTAMP < games.PostedAt + games.Duration AND games.Description LIKE '%$search_query%' OR locations.Name LIKE '%$search_query%'
+            LIMIT 25";
+  $statement = $db->prepare($query);
+  $statement->bindvalue(':search', $search_query);
+  $statement->execute();
+  $games = $statement->fetchAll();
 }
 
 require 'header.php';
@@ -85,26 +101,39 @@ require 'header.php';
           <p class="lead text-muted">Games happening right now</p>
         <?php endif ?>
         <p><a href="new_game.php" class="btn btn-danger my-2">New Game</a></p>
-        <p class="mt-5 text-muted">Sort Games By:</p>
+        <form id="edit-location" method="POST" action="index.php">
+          <div class="input-group">
+            <input class="form-control" name="search" placeholder="Search games..." id="search" />
+            <input class="btn btn-danger" type="submit" id="button-addon2" name="command" value="Search" />
+          </div>
+          <?php if (!empty($search_query)) : ?>
+            <p class="mt-2 text-muted">Showing results for: <?= $search_query ?></p>
+          <?php endif ?>
+        </form>
+        <p class="mt-3 text-muted">Sort Games By:</p>
         <div class="btn-group">
           <?php if (empty($sort)) : ?>
             <a href="index.php" class="btn btn-outline-danger btn-sm active">Start Time</a>
             <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm">Duration</a>
-            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location Name</a>
+            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location</a>
           <?php elseif ($sort === 'duration') : ?>
             <a href="index.php" class="btn btn-outline-danger btn-sm">Start Time</a>
             <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm active">Duration</a>
-            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location Name</a>
+            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location</a>
           <?php elseif ($sort === 'location-name') : ?>
             <a href="index.php" class="btn btn-outline-danger btn-sm">Start Time</a>
             <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm">Duration</a>
-            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm active">Location Name</a>
+            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm active">Location</a>
+          <?php elseif ($sort === 'description') : ?>
+            <a href="index.php" class="btn btn-outline-danger btn-sm">Start Time</a>
+            <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm">Duration</a>
+            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location</a>
           <?php endif ?>
         </div>
         <?php if ($sort === 'location-name') : ?>
           <select class="form-select mt-4" id="location" name="location" onchange="location = this.value;" required>
             <?php if (!empty($location_id)) : ?>
-              <option disabled selected value=""><?=$location_name['Name']?></option>
+              <option disabled selected value=""><?= $location_name['Name'] ?></option>
             <?php else : ?>
               <option disabled selected value="">Choose a location...</option>
             <?php endif ?>
