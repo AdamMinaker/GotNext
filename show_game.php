@@ -29,6 +29,22 @@ $statement->bindvalue(':id', $id, PDO::PARAM_INT);
 $statement->execute();
 $players = $statement->fetchAll();
 
+// Determine if the game is full.
+$full_game = false;
+
+$query = "SELECT COUNT(PlayerID)
+          FROM gameplayers
+          WHERE GameID = $id";
+$statement = $db->prepare($query);
+$statement->execute();
+$player_number = $statement->fetch();
+
+$player_count = $player_number['COUNT(PlayerID)'];
+
+if ($player_count >= 10 && isset($_SESSION['fname'])) {
+  $full_game = true;
+}
+
 // Determine if the player is in the game.
 $in_game = false;
 
@@ -69,9 +85,15 @@ $comments = $statement->fetchAll();
         </form>
       <?php endif ?>
       <?php if (!$in_game) : ?>
-        <form class="mt-4" action="process_game.php?id=<?= $id ?>" method="POST">
-          <input class="btn btn-danger btn-lg" name="command" type="submit" value="Join Game" />
-        </form>
+        <?php if ($full_game) : ?>
+          <form class="mt-4" action="process_game.php?id=<?= $id ?>" method="POST">
+            <input class="btn btn-danger btn-lg" name="command" type="submit" value="Full Game" disabled />
+          </form>
+        <?php else : ?>
+          <form class="mt-4" action="process_game.php?id=<?= $id ?>" method="POST">
+            <input class="btn btn-danger btn-lg" name="command" type="submit" value="Join Game" />
+          </form>
+        <?php endif ?>
       <?php elseif ($in_game) : ?>
         <form class="mt-4" action="process_game.php?id=<?= $id ?>" method="POST">
           <input class="btn btn-danger btn-lg" name="command" type="submit" value="Leave Game" />

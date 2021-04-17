@@ -33,7 +33,7 @@ if ($_POST['command'] === 'Add Court') {
   if (!empty($name) && $acceptable_file_type) {
     // Insert location name and image path into the database.
     $query = "INSERT INTO locations (PostedBy, Name, Image) 
-                  VALUES (:postedby, :name, :image)";
+              VALUES (:postedby, :name, :image)";
     $statement = $db->prepare($query);
     $statement->bindvalue(':postedby', $_SESSION['id']);
     $statement->bindvalue(':name', $name);
@@ -71,14 +71,12 @@ if ($_POST['command'] === 'Delete') {
 }
 
 if ($_POST['command'] === 'Save Changes') {
-  print_r($_POST);
-
   $query = "UPDATE locations 
-            SET Name = :location_name
+            SET Name = :name
             WHERE LocationID = :location_id";
   $statement = $db->prepare($query);
   $statement->bindvalue(':location_id', $location_id);
-  $statement->bindvalue(':location_name', $name);
+  $statement->bindvalue(':name', $name);
   $statement->execute();
 
   if (isset($_POST['remove_image'])) {
@@ -132,7 +130,7 @@ function file_upload_path($original_filename, $upload_subfolder_name = 'image') 
         <p class="lead text-muted">Please make sure you submit a location name.</p>
         <p class="lead text-muted">Images must be in jpg, gif, or png format.</p>
         <p>
-          <a href="index.php" class="btn btn-danger my-2">Go Back</a>
+          <a href="locations.php" class="btn btn-danger my-2">Go Back</a>
         </p>
       </div>
     </div>
