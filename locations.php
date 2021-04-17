@@ -54,7 +54,7 @@ if ($_SESSION['role'] === 'A') {
                 <img src="<?= $location['Image'] ?>">
               <?php endif ?>
               <div class="card-body">
-                <form id="edit-location" action="process_location.php" method="POST">
+                <form id="normalize-form" action="process_location.php" method="POST">
                   <input class="form-control" name="name" value="<?= $location['Name'] ?>" required />
                   <?php if (!empty($location['Image'])) : ?>
                     <label class="form-label">Remove Image</label>

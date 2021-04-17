@@ -8,6 +8,7 @@ session_start();
 ?>
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,8 +21,9 @@ session_start();
   <meta name="theme-color" content="#ffffff">
   <title>GotNext</title>
   <link href="css/bootstrap.min.css?v1.0" rel="stylesheet">
-  <link href="css/main.css?v4.6" rel="stylesheet">
+  <link href="css/main.css?v4.7" rel="stylesheet">
 </head>
+
 <body>
   <header>
     <div class="collapse bg-dark" id="navbarHeader">
@@ -51,6 +53,12 @@ session_start();
                 <a href="logout.php" class="btn btn-outline-danger">Logout</a>
               <?php endif ?>
             </div>
+            <form id="normalize-form" method="POST" action="index.php">
+              <div class="input-group mt-5">
+                <input class="btn btn-danger" type="submit" id="button-addon2" name="command" value="Search" />
+                <input class="form-control" name="search" placeholder="Search games..." id="search" />
+              </div>
+            </form>
           </div>
         </div>
       </div>

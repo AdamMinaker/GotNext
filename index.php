@@ -101,15 +101,6 @@ require 'header.php';
           <p class="lead text-muted">Games happening right now</p>
         <?php endif ?>
         <p><a href="new_game.php" class="btn btn-danger my-2">New Game</a></p>
-        <form id="edit-location" method="POST" action="index.php">
-          <div class="input-group">
-            <input class="form-control" name="search" placeholder="Search games..." id="search" />
-            <input class="btn btn-danger" type="submit" id="button-addon2" name="command" value="Search" />
-          </div>
-          <?php if (!empty($search_query)) : ?>
-            <p class="mt-2 text-muted">Showing results for: <?= $search_query ?></p>
-          <?php endif ?>
-        </form>
         <p class="mt-3 text-muted">Sort Games By:</p>
         <div class="btn-group">
           <?php if (empty($sort)) : ?>
@@ -130,6 +121,9 @@ require 'header.php';
             <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location</a>
           <?php endif ?>
         </div>
+        <?php if (!empty($search_query)) : ?>
+          <p class="mt-3 text-muted">Showing results for: <?= $search_query ?></p>
+        <?php endif ?>
         <?php if ($sort === 'location-name') : ?>
           <select class="form-select mt-4" id="location" name="location" onchange="location = this.value;" required>
             <?php if (!empty($location_id)) : ?>
