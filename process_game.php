@@ -41,10 +41,11 @@ if (isset($_SESSION['fname'])) {
     }
   }
 
-  $post_query = "SELECT GameID, LocationID, PostedBy, Description, Duration, PostedAt
-                FROM games
-                WHERE GameID = :game_id";
-  $statement = $db->prepare($post_query);
+  // Query the DB to find who posted the game.
+  $query = "SELECT PostedBy
+            FROM games
+            WHERE GameID = :game_id";
+  $statement = $db->prepare($query);
   $statement->bindvalue(':game_id', $game_id, PDO::PARAM_INT);
   $statement->execute();
   $game = $statement->fetch();

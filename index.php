@@ -8,8 +8,9 @@ require 'connect.php';
 
 date_default_timezone_set('America/Winnipeg');
 
-// Sanitize get superglobal.
+// Sanitize get superglobals.
 $sort = filter_input(INPUT_GET, 'sort', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$location_id = filter_input(INPUT_GET, 'location-id', FILTER_SANITIZE_NUMBER_INT);
 
 // Determine sorting method.
 $order_by = 'games.PostedAt DESC';
@@ -31,6 +32,31 @@ $query = "SELECT games.GameID, locations.LocationID, games.Description, games.Du
 $statement = $db->prepare($query);
 $statement->execute();
 $games = $statement->fetchAll();
+
+// Query the db for all locations (used if the player decides to filter by location name.)
+if ($sort === 'location-name') {
+  $query = "SELECT LocationID, Name
+            FROM locations";
+  $statement = $db->prepare($query);
+  $statement->execute();
+  $locations = $statement->fetchAll();
+
+  $query = "SELECT Name
+            FROM locations
+            WHERE LocationID = $location_id";
+  $statement = $db->prepare($query);
+  $statement->execute();
+  $location_name = $statement->fetch();
+
+  $query = "SELECT games.GameID, locations.LocationID, games.Description, games.Duration, games.PostedAt, locations.Name, locations.Image
+            FROM games
+            JOIN locations ON locations.LocationID = games.LocationID
+            WHERE CURRENT_TIMESTAMP < games.PostedAt + games.Duration AND locations.LocationID = $location_id
+            ORDER BY $order_by";
+  $statement = $db->prepare($query);
+  $statement->execute();
+  $games = $statement->fetchAll();
+}
 
 require 'header.php';
 ?>
@@ -57,23 +83,33 @@ require 'header.php';
           <p class="lead text-muted">Games happening right now</p>
         <?php endif ?>
         <p><a href="new_game.php" class="btn btn-danger my-2">New Game</a></p>
-        <?php if (!empty($games)) : ?>
-          <p class="mt-5 text-muted">Sort Games By:</p>
-          <div class="btn-group">
-            <?php if (empty($sort)) : ?>
-              <a href="index.php" class="btn btn-outline-danger btn-sm active">Start Time</a>
-              <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm">Duration</a>
-              <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location Name</a>
-            <?php elseif ($sort === 'duration') : ?>
-              <a href="index.php" class="btn btn-outline-danger btn-sm">Start Time</a>
-              <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm active">Duration</a>
-              <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location Name</a>
-            <?php elseif ($sort === 'location-name') : ?>
-              <a href="index.php" class="btn btn-outline-danger btn-sm">Start Time</a>
-              <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm">Duration</a>
-              <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm active">Location Name</a>
+        <p class="mt-5 text-muted">Sort Games By:</p>
+        <div class="btn-group">
+          <?php if (empty($sort)) : ?>
+            <a href="index.php" class="btn btn-outline-danger btn-sm active">Start Time</a>
+            <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm">Duration</a>
+            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location Name</a>
+          <?php elseif ($sort === 'duration') : ?>
+            <a href="index.php" class="btn btn-outline-danger btn-sm">Start Time</a>
+            <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm active">Duration</a>
+            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm">Location Name</a>
+          <?php elseif ($sort === 'location-name') : ?>
+            <a href="index.php" class="btn btn-outline-danger btn-sm">Start Time</a>
+            <a href="index.php?sort=duration" class="btn btn-outline-danger btn-sm">Duration</a>
+            <a href="index.php?sort=location-name" class="btn btn-outline-danger btn-sm active">Location Name</a>
+          <?php endif ?>
+        </div>
+        <?php if ($sort === 'location-name') : ?>
+          <select class="form-select mt-4" id="location" name="location" onchange="location = this.value;" required>
+            <?php if (!empty($location_id)) : ?>
+              <option disabled selected value=""><?=$location_name['Name']?></option>
+            <?php else : ?>
+              <option disabled selected value="">Choose a location...</option>
             <?php endif ?>
-          </div>
+            <?php foreach ($locations as $location) : ?>
+              <option value=" index.php?sort=location-name&location-id=<?= $location['LocationID'] ?>"><?= $location['Name'] ?></option>
+            <?php endforeach ?>
+          </select>
         <?php endif ?>
       </div>
     </div>
@@ -95,8 +131,8 @@ require 'header.php';
                   <?php
                   $game_id = $game['GameID'];
                   $query = "SELECT COUNT(PlayerID)
-                    FROM gameplayers
-                    WHERE GameID = $game_id";
+                            FROM gameplayers
+                            WHERE GameID = $game_id";
                   $statement = $db->prepare($query);
                   $statement->execute();
                   $players = $statement->fetch();

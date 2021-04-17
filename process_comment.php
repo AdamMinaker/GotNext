@@ -14,7 +14,7 @@ $game_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 // Query to post a comment to the DB.
 if (!empty($comment) && $_POST['command'] === 'Post') {
   $query = "INSERT INTO comments (PostedBy, PlayerID, GameID, Content) 
-              VALUES (:PostedBy, :PlayerID, :GameID, :Content)";
+            VALUES (:PostedBy, :PlayerID, :GameID, :Content)";
   $statement = $db->prepare($query);
   $statement->bindvalue(':PostedBy', $posted_by);
   $statement->bindvalue(':PlayerID', $player_id, PDO::PARAM_INT);

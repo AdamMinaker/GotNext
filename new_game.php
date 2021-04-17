@@ -34,9 +34,9 @@ require 'header.php';
         <div class="mb-4">
           <p>Don't see your local court here? <a id="hyperlink" href="new_location.php?new-game">Add a location.</a></p>
         </div>
-        <input class="form-control" type="number" name="duration" placeholder="Game Duration (hours)" required />
+        <input class="form-control" type="number" name="duration" placeholder="Game Duration (1-6 hours)" min="1" max="6" required />
         <div class="invalid-feedback">
-          Please provide a duration.
+          Please provide a duration between 1 and 6 hours.
         </div>
         <div class="mb-3">
           <label for="description"></label>

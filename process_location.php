@@ -7,7 +7,7 @@
 <?php
 require 'connect.php';
 
-// Sanitize post superglobals.
+// Sanitize post superglobal.
 $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
 $file_upload_detected = isset($_FILES['file']) && ($_FILES['file']['error'] === 0);

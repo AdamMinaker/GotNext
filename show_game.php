@@ -58,7 +58,7 @@ $comments = $statement->fetchAll();
       </div>
     </div>
     <?php if (!empty($game['Image'])) : ?>
-      <img class="img shadow-lg" src="<?= $game['Image'] ?>">
+      <img class="img shadow-lg" src="<?= $game['Image'] ?>" alt="Location Image">
     <?php endif ?>
     <p class="lead mt-5"><?= $game['Description'] ?></p>
     <?php if (isset($_SESSION['fname'])) :
@@ -96,7 +96,7 @@ $comments = $statement->fetchAll();
           <form class="comment" action="process_comment.php?id=<?= $game['GameID'] ?>" method="POST">
             <div class="input-group mb-3">
               <input type="text" class="form-control shadow" name="comment" placeholder="Message" aria-label="Message" aria-describedby="button-addon2" autocomplete="off">
-              <input class="btn btn-danger" for="comment" type="submit" id="button-addon2" name="command" value="Post" />
+              <input class="btn btn-danger" type="submit" id="button-addon2" name="command" value="Post" />
             </div>
           <?php else : ?>
             <div class="input-group mb-3">
