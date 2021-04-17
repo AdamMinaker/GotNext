@@ -6,54 +6,101 @@
 -->
 <?php
 require 'connect.php';
+require 'header.php';
 
 // Sanitize post superglobal.
 $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-$file_upload_detected = isset($_FILES['file']) && ($_FILES['file']['error'] === 0);
-$acceptable_file_type = true;
-$image_path = '';
-
-require 'header.php';
-
-if ($file_upload_detected) {
-  $filename = $_FILES['file']['name'];
-  $temporary_file_path = $_FILES['file']['tmp_name'];
-  $new_file_path = file_upload_path($filename);
-
-  if (file_is_an_image($temporary_file_path, $new_file_path)) {
-    move_uploaded_file($temporary_file_path, $new_file_path);
-    $image_path = 'image/' . $filename;
-  } else {
-    $acceptable_file_type = false;
-  }
-}
-
-if (!empty($name) && $acceptable_file_type) {
-  // Insert location name and image path into the database.
-  $query = "INSERT INTO locations (PostedBy, Name, Image) 
-                VALUES (:postedby, :name, :image)";
-  $statement = $db->prepare($query);
-  $statement->bindvalue(':postedby', $_SESSION['id']);
-  $statement->bindvalue(':name', $name);
-  $statement->bindvalue(':image', $image_path);
-  $statement->execute();
-
-  if (isset($_GET['new-game'])) {
-    header('Location: new_game.php');
-  } elseif (isset($_GET['locations'])) {
-    header('Location: locations.php');
-  }
-}
-
 $location_id = filter_input(INPUT_POST, 'location_id', FILTER_SANITIZE_NUMBER_INT);
 
+if ($_POST['command'] === 'Add Court') {
+  $file_upload_detected = isset($_FILES['file']) && ($_FILES['file']['error'] === 0);
+  $acceptable_file_type = true;
+  $image_path = '';
+
+  if ($file_upload_detected) {
+    $filename = $_FILES['file']['name'];
+    $temporary_file_path = $_FILES['file']['tmp_name'];
+    $new_file_path = file_upload_path($filename);
+
+    if (file_is_an_image($temporary_file_path, $new_file_path)) {
+      move_uploaded_file($temporary_file_path, $new_file_path);
+      $image_path = 'image/' . $filename;
+    } else {
+      $acceptable_file_type = false;
+    }
+  }
+
+  if (!empty($name) && $acceptable_file_type) {
+    // Insert location name and image path into the database.
+    $query = "INSERT INTO locations (PostedBy, Name, Image) 
+                  VALUES (:postedby, :name, :image)";
+    $statement = $db->prepare($query);
+    $statement->bindvalue(':postedby', $_SESSION['id']);
+    $statement->bindvalue(':name', $name);
+    $statement->bindvalue(':image', $image_path);
+    $statement->execute();
+
+    if (isset($_GET['new-game'])) {
+      header('Location: new_game.php');
+    } elseif (isset($_GET['locations'])) {
+      header('Location: locations.php');
+    }
+  }
+}
+
 if ($_POST['command'] === 'Delete') {
+  $query = "SELECT Image
+            FROM locations
+            WHERE LocationID = :location_id";
+  $statement = $db->prepare($query);
+  $statement->bindvalue(':location_id', $location_id);
+  $statement->execute();
+  $location_image = $statement->fetch();
+
+  $file_name = $location_image['Image'];
+
+  unlink($file_name);
+
   $query = "DELETE FROM locations 
             WHERE LocationID = :LocationID";
   $statement = $db->prepare($query);
   $statement->bindvalue(':LocationID', $location_id, PDO::PARAM_INT);
   $statement->execute();
+
+  header('Location: locations.php');
+}
+
+if ($_POST['command'] === 'Save Changes') {
+  print_r($_POST);
+
+  $query = "UPDATE locations 
+            SET Name = :location_name
+            WHERE LocationID = :location_id";
+  $statement = $db->prepare($query);
+  $statement->bindvalue(':location_id', $location_id);
+  $statement->bindvalue(':location_name', $name);
+  $statement->execute();
+
+  if (isset($_POST['remove_image'])) {
+    $query = "SELECT Image
+              FROM locations
+              WHERE LocationID = :location_id";
+    $statement = $db->prepare($query);
+    $statement->bindvalue(':location_id', $location_id);
+    $statement->execute();
+    $location_image = $statement->fetch();
+
+    $file_name = $location_image['Image'];
+
+    unlink($file_name);
+
+    $query = "UPDATE locations 
+              SET Image = null
+              WHERE LocationID = :location_id";
+    $statement = $db->prepare($query);
+    $statement->bindvalue(':location_id', $location_id);
+    $statement->execute();
+  }
 
   header('Location: locations.php');
 }

@@ -91,9 +91,10 @@
   margin: auto;
 }
 
-#delete-location {
+#edit-location {
   padding: 0px;
   margin: 0px;
+  width: 100%;
 }
 
 ::-webkit-scrollbar {

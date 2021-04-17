@@ -48,14 +48,16 @@ if ($sort === 'location-name') {
   $statement->execute();
   $location_name = $statement->fetch();
 
-  $query = "SELECT games.GameID, locations.LocationID, games.Description, games.Duration, games.PostedAt, locations.Name, locations.Image
-            FROM games
-            JOIN locations ON locations.LocationID = games.LocationID
-            WHERE CURRENT_TIMESTAMP < games.PostedAt + games.Duration AND locations.LocationID = $location_id
-            ORDER BY $order_by";
-  $statement = $db->prepare($query);
-  $statement->execute();
-  $games = $statement->fetchAll();
+  if (!empty($location_id)) {
+    $query = "SELECT games.GameID, locations.LocationID, games.Description, games.Duration, games.PostedAt, locations.Name, locations.Image
+              FROM games
+              JOIN locations ON locations.LocationID = games.LocationID
+              WHERE CURRENT_TIMESTAMP < games.PostedAt + games.Duration AND locations.LocationID = $location_id
+              ORDER BY $order_by";
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $games = $statement->fetchAll();
+  }
 }
 
 require 'header.php';

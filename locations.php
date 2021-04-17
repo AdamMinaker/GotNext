@@ -54,10 +54,17 @@ if ($_SESSION['role'] === 'A') {
                 <img src="<?= $location['Image'] ?>">
               <?php endif ?>
               <div class="card-body">
-                <h5 id="location-name" class="card-title"><?= $location['Name'] ?></h5>
-                <form id="delete-location" action="process_location.php" method="POST">
+                <form id="edit-location" action="process_location.php" method="POST">
+                  <input class="form-control" name="name" value="<?= $location['Name'] ?>" required />
+                  <?php if (!empty($location['Image'])) : ?>
+                    <label class="form-label">Remove Image</label>
+                    <input class="mt-3" type="checkbox" id="remove_image" name="remove_image" value="true">
+                  <?php endif ?>
                   <input type="hidden" name="location_id" value="<?= $location['LocationID'] ?>" />
-                  <input class="btn btn-danger btn-sm mt-3" type="submit" name="command" value="Delete" />
+                  <div class="d-flex mt-1">
+                    <input class="btn btn-danger btn-sm mt-1" type="submit" name="command" value="Save Changes" />
+                    <input class="btn btn-danger btn-sm mt-1 ms-1" type="submit" name="command" value="Delete" />
+                  </div>
                 </form>
               </div>
             </div>
