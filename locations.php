@@ -31,47 +31,55 @@ if ($_SESSION['role'] === 'A') {
 }
 ?>
 <main>
-  <section class="py-5 text-center container">
-    <div class="row py-lg-5">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <?php if ($_SESSION['role'] === 'U') : ?>
-          <h1 class="fw-light">My Locations</h1>
-        <?php elseif ($_SESSION['role'] === 'A') : ?>
-          <h1 class="fw-light">All Locations</h1>
-        <?php endif ?>
-        <p><a href="new_location.php?locations" class="btn btn-danger my-2">Add Location</a></p>
+  <?php if (isset($_SESSION['fname'])) : ?>
+    <section class="py-5 text-center container">
+      <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <?php if ($_SESSION['role'] === 'U') : ?>
+            <h1 class="fw-light">My Locations</h1>
+          <?php elseif ($_SESSION['role'] === 'A') : ?>
+            <h1 class="fw-light">All Locations</h1>
+          <?php endif ?>
+          <p><a href="new_location.php?locations" class="btn btn-danger my-2">Add Location</a></p>
+        </div>
       </div>
-    </div>
-  </section>
-  <!-- Location Cards -->
-  <div class="album py-5 bg-light">
-    <div class="container ">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <?php foreach ($locations as $location) : ?>
-          <div class="col">
-            <div class="card shadow-sm">
-              <?php if (!empty($location['Image'])) : ?>
-                <img src="<?= $location['Image'] ?>">
-              <?php endif ?>
-              <div class="card-body">
-                <form id="normalize-form" action="process_location.php" method="POST">
-                  <input class="form-control" name="name" value="<?= $location['Name'] ?>" required />
-                  <?php if (!empty($location['Image'])) : ?>
-                    <label class="form-label">Remove Image</label>
-                    <input class="mt-3" type="checkbox" id="remove_image" name="remove_image" value="true">
-                  <?php endif ?>
-                  <input type="hidden" name="location_id" value="<?= $location['LocationID'] ?>" />
-                  <div class="d-flex mt-1">
-                    <input class="btn btn-danger btn-sm mt-1" type="submit" name="command" value="Save Changes" />
-                    <input class="btn btn-danger btn-sm mt-1 ms-1" type="submit" name="command" value="Delete" />
-                  </div>
-                </form>
+    </section>
+    <!-- Location Cards -->
+    <div class="album py-5 bg-light">
+      <div class="container ">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          <?php foreach ($locations as $location) : ?>
+            <div class="col">
+              <div class="card shadow-sm">
+                <?php if (!empty($location['Image'])) : ?>
+                  <img src="<?= $location['Image'] ?>">
+                <?php endif ?>
+                <div class="card-body">
+                  <form class="needs-validation" id="normalize-form" enctype="multipart/form-data" action="process_location.php" method="POST" novalidate>
+                    <input class="form-control" name="name" value="<?= $location['Name'] ?>" required />
+                    <div class="invalid-feedback">
+                      Location needs a name.
+                    </div>
+                    <?php if (!empty($location['Image'])) : ?>
+                      <label class="form-label">Remove Image</label>
+                      <input class="mt-3" type="checkbox" id="remove_image" name="remove_image" value="true">
+                    <?php else : ?>
+                      <label class="form-label mt-3" for="file">Add Image (Optional)</label>
+                      <input class="form-control mb-3" type="file" name="file" id="image" />
+                    <?php endif ?>
+                    <input type="hidden" name="location_id" value="<?= $location['LocationID'] ?>" />
+                    <div class="d-flex mt-1">
+                      <input class="btn btn-danger btn-sm mt-1" type="submit" name="command" value="Save Changes" />
+                      <input class="btn btn-danger btn-sm mt-1 ms-1" type="submit" name="command" value="Delete" />
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
-        <?php endforeach ?>
+          <?php endforeach ?>
+        </div>
       </div>
     </div>
-  </div>
+  <?php endif ?>
 </main>
 <?php require 'footer.php'; ?>

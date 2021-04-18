@@ -11,11 +11,11 @@ require 'header.php';
 $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 $location_id = filter_input(INPUT_POST, 'location_id', FILTER_SANITIZE_NUMBER_INT);
 
-if ($_POST['command'] === 'Add Court') {
-  $file_upload_detected = isset($_FILES['file']) && ($_FILES['file']['error'] === 0);
-  $acceptable_file_type = true;
-  $image_path = '';
+$file_upload_detected = isset($_FILES['file']) && ($_FILES['file']['error'] === 0);
+$acceptable_file_type = true;
+$image_path = '';
 
+if ($_POST['command'] === 'Add Court') {
   if ($file_upload_detected) {
     $filename = $_FILES['file']['name'];
     $temporary_file_path = $_FILES['file']['tmp_name'];
@@ -70,13 +70,39 @@ if ($_POST['command'] === 'Delete') {
 }
 
 if ($_POST['command'] === 'Save Changes') {
-  $query = "UPDATE locations 
-            SET Name = :name
-            WHERE LocationID = :location_id";
-  $statement = $db->prepare($query);
-  $statement->bindvalue(':location_id', $location_id);
-  $statement->bindvalue(':name', $name);
-  $statement->execute();
+  if ($file_upload_detected) {
+    $filename = $_FILES['file']['name'];
+    $temporary_file_path = $_FILES['file']['tmp_name'];
+    $new_file_path = file_upload_path($filename);
+
+    if (file_is_an_image($temporary_file_path, $new_file_path)) {
+      move_uploaded_file($temporary_file_path, $new_file_path);
+      $image_path = 'image/' . $filename;
+    } else {
+      $acceptable_file_type = false;
+    }
+  }
+
+  if (!empty($name) && !$file_upload_detected) {
+    $query = "UPDATE locations 
+              SET Name = :name
+              WHERE LocationID = :location_id";
+    $statement = $db->prepare($query);
+    $statement->bindvalue(':location_id', $location_id);
+    $statement->bindvalue(':name', $name);
+    $statement->execute();
+  }
+
+  if (!empty($name) && $acceptable_file_type && $file_upload_detected) {
+    $query = "UPDATE locations 
+              SET Name = :name, Image = :image
+              WHERE LocationID = :location_id";
+    $statement = $db->prepare($query);
+    $statement->bindvalue(':location_id', $location_id);
+    $statement->bindvalue(':name', $name);
+    $statement->bindvalue(':image', $image_path);
+    $statement->execute();
+  }
 
   if (isset($_POST['remove_image'])) {
     $query = "SELECT Image
