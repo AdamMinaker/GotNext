@@ -21,7 +21,7 @@ session_start();
   <meta name="theme-color" content="#ffffff">
   <title>GotNext</title>
   <link href="css/bootstrap.min.css?v1.0" rel="stylesheet">
-  <link href="css/main.css?v4.7" rel="stylesheet">
+  <link href="css/main.css?v4.9" rel="stylesheet">
 </head>
 
 <body>

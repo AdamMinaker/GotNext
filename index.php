@@ -68,7 +68,7 @@ if (!empty($search_query)) {
   $query = "SELECT games.GameID, locations.LocationID, games.Description, games.Duration, games.PostedAt, locations.Name, locations.Image
             FROM games
             JOIN locations ON locations.LocationID = games.LocationID
-            WHERE CURRENT_TIMESTAMP < games.PostedAt + games.Duration AND games.Description LIKE '%$search_query%' OR locations.Name LIKE '%$search_query%'
+            WHERE CURRENT_TIMESTAMP < games.PostedAt + games.Duration AND games.Description LIKE '%$search_query%' OR locations.Name LIKE '%$search_query%' AND CURRENT_TIMESTAMP < games.PostedAt + games.Duration
             LIMIT 25";
   $statement = $db->prepare($query);
   $statement->bindvalue(':search', $search_query);
@@ -144,7 +144,7 @@ require 'header.php';
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
         <?php foreach ($games as $game) : ?>
-          <a href="show_game.php?id=<?= $game['GameID'] ?>" style="text-decoration: none; color: black;">
+          <a href="show_game.php?id=<?= $game['GameID'] ?>" class="game-link">
             <div class="col">
               <div class="card shadow-sm">
                 <?php if (!empty($game['Image'])) : ?>
