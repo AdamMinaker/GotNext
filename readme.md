@@ -1,4 +1,4 @@
-GotNext
+#GotNext
 A medium for basketball players. 
 The main idea behind this website is to provide a medium for basketball players to find other basketball players to compete with on public basketball courts.
 This will allow the sport to grow and increase healthy competition which will increase general health and fitness. 
